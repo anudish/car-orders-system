@@ -1,0 +1,57 @@
+<div class="container-fluid" style="min-height: 100%;">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-lg-7 col-md-8 col-sm-6" style="margin-top: 50px; ">
+            <h2 style="font-weight: 700;font-size: 50px; text-align: center;">Welcome!!!</h2> <hr>
+        </div>
+ 
+    </div>
+ <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-lg-7">
+        <h3 class="form-header" style="font-style: oblique;">Perform Create and Update Operations on Data</h3>
+    </div>
+ </div>
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <div class="card" style="width: auto; margin-left: auto;">
+                <div class="bodystyle card-body">
+                    <form class="customForm needs-validation" [formGroup]="storeData" id="storeData" novalidate="">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" formControlName="accessoryID" min="0" class="form-control" placeholder="Enter the Accessory ID" require [ngClass]="{ 'is-invalid': submitted && f.accessoryID.errors }">        
+                                <div *ngIf="submitted && f.accessoryID.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.accessoryID.errors.required">Accessory ID is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" formControlName="accessoryName" class="form-control" placeholder="Enter the Accessory Name" require [ngClass]="{ 'is-invalid': submitted && f.accessoryName.errors }">        
+                                <div *ngIf="submitted && f.accessoryName.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.accessoryName.errors.required">Accessory Name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" formControlName="UnitPrice" min="0" class="form-control" placeholder="UnitPrice of Accessory" require [ngClass]="{ 'is-invalid': submitted && f.UnitPrice.errors }">        
+                                <div *ngIf="submitted && f.UnitPrice.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.UnitPrice.errors.required">UnitPrice of Accessory is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary submit-btn" style="border-radius: 25px;" (click)="navigateToInsert()">INSERT</button>
+                            <button type="submit" class="btn btn-secondary submit-btn" style=" border-radius: 25px;margin-left: 10px;" (click)="navigateToUpdate()">UPDATE</button>
+                       </div>
+            
+                    </form>
+                </div>
+            </div>
+        </div>
+      <div class="col-lg-4"></div>
+    </div>
+</div>

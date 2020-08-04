@@ -1,0 +1,7 @@
+.bodystyle{
+    color: black;
+    border-radius: 3px;
+    background: white;
+    box-shadow: 5px 10px 10px hsla(244, 73%, 55%, 0.8);
+    padding: 30px;
+}
