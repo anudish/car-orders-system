@@ -1,1 +1,1 @@
-Group 18 - Team Project
+# Group 18
