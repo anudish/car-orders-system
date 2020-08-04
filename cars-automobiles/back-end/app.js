@@ -85,10 +85,30 @@ app.get('/insertIntoCar', (req, res) => {
           console.log('rollback'+err)
         // Transaction has been rolled back
         // err is whatever rejected the promise chain returned to the transaction callback
-      });;
+      });
 });
 
 
+app.get('/updateCar', (req, res) => {
+
+    return sequelize.transaction(function (t) {
+        return Cars.update({
+            model: 'null',
+          }, {
+            where: {
+              car_name:  'audi'
+              
+            }
+          }, {transaction: t}).then(function (car) {
+          console.log('cehck'+car)
+        });
+      }).catch(function (err) {
+          console.log('rollback'+err)
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+      });
+   
+})
 
 module.exports = app;
 
