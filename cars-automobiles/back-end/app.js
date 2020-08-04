@@ -24,7 +24,9 @@ var sequelize = new Sequelize('cars-automobiles-team18', 'myuser@a6team18', 'qwe
         {
          type: Sequelize.INTEGER,
          allowNull: false,
-         primaryKey: true
+         primaryKey: true,
+         autoIncrement: true
+         
         }, 
         model:
         {
@@ -37,6 +39,9 @@ var sequelize = new Sequelize('cars-automobiles-team18', 'myuser@a6team18', 'qwe
            
            updatedAt:{
                type: Sequelize.TIME
+           },
+           image_url:{
+            type: Sequelize.STRING
            }
     }, {  tableName: 'cars'
 }); 
@@ -61,5 +66,29 @@ app.get('/getAllCars', (req, res) => {
        
     }).catch(error => { console.log('caught', error.message); });;
 });
+
+
+app.get('/insertIntoCar', (req, res) => {
+
+
+
+
+      return sequelize.transaction(function (t) {
+        return Cars.create({
+            car_name: 'AB33C',
+            model: 'AA',
+            image_url :'http://sdvdABDGSJDFDHSGFGMFHHGFEBBVDVBNFFGBFERFFEF'
+          }, {transaction: t}).then(function (car) {
+          console.log('cehck'+car)
+        });
+      }).catch(function (err) {
+          console.log('rollback'+err)
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+      });;
+});
+
+
+
 module.exports = app;
 
