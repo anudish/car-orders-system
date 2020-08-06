@@ -20,14 +20,6 @@
                     <form class="customForm needs-validation" [formGroup]="storeData" id="storeData" novalidate="">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="number" formControlName="accessoryID" min="0" class="form-control" placeholder="Enter the Accessory ID" require [ngClass]="{ 'is-invalid': submitted && f.accessoryID.errors }">        
-                                <div *ngIf="submitted && f.accessoryID.errors" class="invalid-feedback">
-                                    <div class="errorRed" *ngIf="f.accessoryID.errors.required">Accessory ID is required</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
                                 <input type="text" formControlName="accessoryName" class="form-control" placeholder="Enter the Accessory Name" require [ngClass]="{ 'is-invalid': submitted && f.accessoryName.errors }">        
                                 <div *ngIf="submitted && f.accessoryName.errors" class="invalid-feedback">
                                     <div class="errorRed" *ngIf="f.accessoryName.errors.required">Accessory Name is required</div>
@@ -36,13 +28,39 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="number" formControlName="UnitPrice" min="0" class="form-control" placeholder="UnitPrice of Accessory" require [ngClass]="{ 'is-invalid': submitted && f.UnitPrice.errors }">        
-                                <div *ngIf="submitted && f.UnitPrice.errors" class="invalid-feedback">
-                                    <div class="errorRed" *ngIf="f.UnitPrice.errors.required">UnitPrice of Accessory is required</div>
+                                <input type="text" formControlName="carName" class="form-control" placeholder="Enter the Car Name" require [ngClass]="{ 'is-invalid': submitted && f.carName.errors }">        
+                                <div *ngIf="submitted && f.carName.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.carName.errors.required">Car Name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" formControlName="model" class="form-control" placeholder="Enter the Car Model" require [ngClass]="{ 'is-invalid': submitted && f.model.errors }">        
+                                <div *ngIf="submitted && f.model.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.model.errors.required">Car Model is required</div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" formControlName="price" min="0" class="form-control" placeholder="Price of Accessory" require [ngClass]="{ 'is-invalid': submitted && f.price.errors }">        
+                                <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.price.errors.required">Price of Accessory is required</div>
                                 </div>
                             </div>
                         </div>
                         
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" formControlName="qty" min="0" class="form-control" placeholder="Quantity of Accessory" require [ngClass]="{ 'is-invalid': submitted && f.qty.errors }">        
+                                <div *ngIf="submitted && f.qty.errors" class="invalid-feedback">
+                                    <div class="errorRed" *ngIf="f.qty.errors.required">Quantity of Accessory is required</div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary submit-btn" style="border-radius: 25px;" (click)="navigateToInsert()">INSERT</button>
                             <button type="submit" class="btn btn-secondary submit-btn" style=" border-radius: 25px;margin-left: 10px;" (click)="navigateToUpdate()">UPDATE</button>

@@ -1,5 +1,7 @@
 export interface accessories{
-    accessoryID : number;
     accessoryName : string;
-    UnitPrice : number;
+    carName : string;
+    model: string;
+    price: number;
+    qty: number
 }

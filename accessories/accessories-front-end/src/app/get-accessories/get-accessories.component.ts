@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { accessories} from './accessories';
+import { AccessoriesDbInteractionService} from '../accessories-db-interaction.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-get-accessories',
@@ -7,50 +10,31 @@ import { accessories} from './accessories';
   styleUrls: ['./get-accessories.component.css']
 })
 export class GetAccessoriesComponent implements OnInit {
-public accessoryList: accessories[] = [  
-  {
-  accessoryID: 1,
-  accessoryName: "Winter Tires",
-  UnitPrice: 100
-  },
-  {
-  accessoryID: 2,
-  accessoryName: "Music System",
-  UnitPrice: 300
-  },
-  {
-  accessoryID: 3,
-  accessoryName: "Car Jack",
-  UnitPrice: 150
-  },
-  {
-  accessoryID: 4,
-  accessoryName: "Axle",
-  UnitPrice: 2000
-  },
-  {
-  accessoryID: 5,
-  accessoryName: "AC",
-  UnitPrice: 500
-  },
-  {
-  accessoryID: 6,
-  accessoryName: "Airfilter",
-  UnitPrice: 2000
-  },
-  {
-  accessoryID: 7,
-  accessoryName: "Seat Covers",
-  UnitPrice: 500
-  }
-]; 
+public accessoryList: accessories[];
 accessoriesSearch: String;
   
-  constructor() { }
+  constructor(private router: Router, private accessoriesService: AccessoriesDbInteractionService,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-//    this.popualateAccessoryDetails();
+    this.popualateAccessoryDetails();
+  }
+  
+  onDeleteAccessory(accessories:accessories){
+    this.accessoriesService.deleteAccessory(accessories).subscribe((data)=>{
+      this.popualateAccessoryDetails();
+      this._snackBar.open(data.message, '', {
+        duration: 2000, panelClass: ["snackbar_confirm"]
+      });
+  
+    })
   }
   popualateAccessoryDetails(){
+    this.accessoriesService.getAllAccessories().subscribe((data) => {
+      this.accessoryList = data.message as accessories[];
+      debugger;
+    }, error => {
+        console.log(error);
+    });
+   }
+
   }
-}
