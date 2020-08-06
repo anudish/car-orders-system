@@ -2,6 +2,9 @@ var Sequelize = require('sequelize');
 const express = require('express')
 const app = express()
 const port = 3000;
+const cors = require('cors');
+app.use(cors());
+
 app.use(express.json());
 var sequelize = new Sequelize('a6', 'admin', 'CompanyY1234', {
 //var sequelize = new Sequelize('a6', 'root', 'B00837967', {
@@ -153,7 +156,7 @@ app.post('/insertIntoAccessories', (req, res) => {
         let carName = req.body.carName;
         let qty = req.body.qty;
         let model = req.body.model;
-
+        console.log(accessoryName +", " + price + ", "+ carName +", " + qty + ", " + model);
         return Accessories.create({
             model: model,
             accessoryName: accessoryName,
@@ -182,16 +185,11 @@ app.put('/updateAccessory', (req, res) => {
     let model = req.body.model;
     let price = req.body.price;
     let qty = req.body.qty;
-    console.log("req body car name" + carName)
-    console.log("req body accessory name" + accessoryName)
-    console.log("req body car model" + model)
-
 
     Accessories.findOne({ where: { 'carName': carName, "accessoryName": accessoryName, "model": model } }).then(function (accessory, err) {
         if (err) {
             throw err;
         }
-        console.log("Response from sql " + accessory);
 
         if (accessory === null) {
 
@@ -248,11 +246,11 @@ app.put('/updateAccessory', (req, res) => {
 
 });
 
-app.delete('/deleteAccessory', (req, res) => {
+app.post('/deleteAccessory', (req, res) => {
     let accessoryName = req.body.accessoryName;
     let model = req.body.model;
     let carName = req.body.carName;
-    //let model = req.body.model;
+
     return sequelize.transaction(function (t) {
         return Accessories.destroy({
             where: {
