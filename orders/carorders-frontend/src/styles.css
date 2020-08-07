@@ -1,8 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+<<<<<<< HEAD
  body {
   /* /  background-image: url("./assets/new.jpg"); */
   } 
   html, body { height: 100%; }
   body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   
+=======
 
+/* body {
+    background-image: url("./assets/new.jpg");
+  }  */
+
+html, body {
+  height: 100%;
+}
+>>>>>>> 5727e0d972e5683185cf0d79c40aeb294e04acf0
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

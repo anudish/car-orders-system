@@ -11,13 +11,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { ProductInfoComponent } from './product-info/product-info.component';
+import { HomepageComponent } from './homepage/homepage.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     LoginComponent,
     HeaderComponent,
-    ProductInfoComponent
+     ProductInfoComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +32,7 @@ import { ProductInfoComponent } from './product-info/product-info.component';
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+
     MatSelectModule,
     MatOptionModule,
     MatFormFieldModule,
@@ -40,6 +44,8 @@ import { ProductInfoComponent } from './product-info/product-info.component';
     MatCheckboxModule,
     MatTableModule,
     
+
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

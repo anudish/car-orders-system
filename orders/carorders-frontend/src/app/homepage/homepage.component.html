@@ -1,0 +1,38 @@
+<div class="container py-5">
+    <div class="row" style="margin-top: 10%;">
+        <div class="col-3">
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <form class="searchBar">
+                <mat-form-field class="searchForm">
+                    <input type="text" placeholder="Search cars" aria-label="Number" matInput
+                        [formControl]="searchBarControl">
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="getCarDetails()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+
+    <div class="row row-cols-4">
+        <div class="col-3" *ngFor="let bp of carDetails; " style="cursor: pointer;">
+            <div (click)="loadCarDetails(bp)">
+                <div class="embed-responsive embed-responsive-1by1">
+                    <img class="card-img-top embed-responsive-item img-fluid" src="{{bp.image_url}}"
+                        alt="Card image cap">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" class="text-center">{{bp.car_name}} {{bp.model}}</h5>
+                    <p class="card-text text-center">
+                        {{bp.description}}
+                    </p>
+                    <p class="card-text text-center" style="font-weight: bolder;">${{bp.price}}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

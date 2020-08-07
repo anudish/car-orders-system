@@ -15,10 +15,10 @@ var sequelize = new Sequelize('cars-orders-team18', 'companyz@companyzdb', 'qwer
 });
 var User = sequelize.define('user_details', {
 
-    fistName:
+    firstName:
     {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     id:
     {
@@ -31,7 +31,7 @@ var User = sequelize.define('user_details', {
     lastName:
     {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     createdAt: {
         type: Sequelize.TIME
@@ -108,7 +108,7 @@ app.get('/getAllCars', (req, res) => {
 
 
 app.post('/registerUser', (req, res) => {
-
+    let email = req.body.email;
 
     User.findOne({ where: { 'email': email } }).then(function (user, err) {
         if (err) {
@@ -119,30 +119,29 @@ app.post('/registerUser', (req, res) => {
         if (user === null) {
             console.log("find one query  empty " + user)
 
-            res.send({ 'status': false, "message": "User Already Exist! Login" })
-        }
-        else {
-
             return sequelize.transaction(function (t) {
-                let fistName = req.body.fistName;
+                let firstName = req.body.firstName;
                 let lastName = req.body.lastName;
-                let email = req.body.email;
+                // let email = req.body.email;
                 let password = req.body.password;
 
                 return User.create({
-                    fistName: car_name,
+                    firstName: firstName,
                     lastName: lastName,
                     email: email,
                     password: password
 
                 }, { transaction: t }).then(function (u) {
-                    console.log('cehck' + u)
-                    res.send({ 'status': true, "message": "Records Inserted Successfully" })
+                    console.log('check' + u)
+                    res.send({ 'status': true, "message": "User Registered Successfully", "data": user })
 
                 });
             })
 
-            // res.send(car);
+            // res.send({ 'status': false, "message": "User Already Exist! Login" })
+        }
+        else {
+            res.send({ 'status': false, "message": "alreadyRegistered", "data": user })
         }
 
 
@@ -154,6 +153,43 @@ app.post('/registerUser', (req, res) => {
 
     });;
 });
+
+app.post('/login', (req, res) => {
+    let email = req.body.email;
+    let password = req.body.password;
+
+    console.log("req email " + email)
+    console.log("req password " + password)
+
+    User.findOne({ where: { 'email': email, 'password': password } }).then(function (user, err) {
+        if (err) {
+            throw err;
+        }
+        console.log("Response from sql " + user);
+
+        if (user === null) {
+            console.log("find one query empty not present " + user)
+
+            res.send({ 'status': false, "message": "Login Failed! Invalid EmailId or Password" })
+        }
+        else {
+            res.send({ 'status': true, "message": user })
+        }
+
+
+    }).catch(function (err) {
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+        console.log('rollback' + err)
+        res.send({ 'status': false, "message": err.message })
+
+    });;
+});
+
+
+
+
+
 
 app.post('/updateCar', (req, res) => {
 
@@ -204,49 +240,8 @@ app.post('/updateCar', (req, res) => {
 
     })
 
-
-
-
-    // return sequelize.transaction(function (t) {
-    //     return Cars.update({
-    //         model: model,
-    //     }, {
-    //         where: {
-    //             car_name: carName,
-    //         }
-    //     }, { transaction: t }).then(function (car) {
-    //         console.log('check' + car)
-    //         res.send({ 'status': true, "message": "Records Updated Successfully" })
-    //     });
-    // }).catch(function (err) {
-    //     // Transaction has been rolled back
-    //     // err is whatever rejected the promise chain returned to the transaction callback
-    //     console.log('rollback' + err)
-    //     res.send({ 'status': false, "message": err.message })
-
-    // });
-
 });
 
-app.post('/deleteCar', (req, res) => {
-    let carName = req.body.car_name;
-    let model = req.body.model;
-    return sequelize.transaction(function (t) {
-        return Cars.destroy({
-            where: {
-                car_name: carName,
-                model: model
-            }
-        }, { transaction: t }).then(function (car) {
-            console.log('cehck' + car)
-            res.send({ 'status': true, "message": "Records Deleted Successfully" })
-        });
-    }).catch(function (err) {
-        console.log('rollback' + err)
-        // Transaction has been rolled back
-        res.send({ 'status': false, "message": err.message })
-        // err is whatever rejected the promise chain returned to the transaction callback
-    });
-})
+
 
 module.exports = app;
