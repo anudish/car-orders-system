@@ -38,4 +38,28 @@ export class OrdersService {
 
     return throwError(errorMessage);
   }
+
+  sendOTP(data): Observable<any> {
+    let API_URL = this.apiUrl + '/sendEmail'
+    return this.http.post(API_URL, data)
+      .pipe(
+        catchError(this.error)
+      )
+  }
+
+  saveOTP(data): Observable<any> {
+    let API_URL = this.apiUrl + '/saveOTP'
+    return this.http.post(API_URL, data)
+      .pipe(
+        catchError(this.error)
+      )
+  }
+
+  validateOTP(data): Observable<any> {
+    let API_URL = this.apiUrl + '/validateOTP'
+    return this.http.post(API_URL, data)
+      .pipe(
+        catchError(this.error)
+      )
+  }
 }

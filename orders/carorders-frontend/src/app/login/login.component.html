@@ -5,7 +5,30 @@
                 <div class="card-header">
                     <h4 class="mb-0">Login</h4>
                 </div>
-                <form class="customForm needs-validation" [formGroup]="loginForm" id="loginForm" novalidate="">
+                <form class="customForm needs-validation" [formGroup]="otpForm" id="loginForm" novalidate=""
+                    *ngIf="!showLoginForm">
+
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xl-12">
+                        <input type="password" name="otp" id="otp" placeholder="OTP" class="form-control"
+                            formControlName="otp">
+                        <div *ngIf="(otpForm.get('otp').invalid && onInit) || 
+                            (otpForm.get('otp').invalid && (otpForm.get('otp').dirty ||
+                            otpForm.get('otp').touched))" class="alert alert-danger">
+
+                            <div *ngIf="otpForm.get('otp').errors.required">
+                                OTP can't be empty
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" col-md-3 col-sm-3 col-lg-3 col-xl-3">
+                        <button type="submit" class="btn btn-info btn-sm" id="btnLogin"
+                            (click)="validateOTP()">validateOTP</button>
+                    </div>
+
+                </form>
+                <form class="customForm needs-validation" [formGroup]="loginForm" id="loginForm" novalidate=""
+                    *ngIf="showLoginForm">
 
                     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xl-12">
 
@@ -41,6 +64,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class=" col-md-3 col-sm-3 col-lg-3 col-xl-3">
                             <button type="submit" class="btn btn-info btn-sm" id="btnLogin"
