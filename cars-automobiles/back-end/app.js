@@ -265,7 +265,7 @@ app.get('/getAllOrders', (req, res) => {
             throw err;
         }
         console.log("RESPONSE " + orders);
-        if (cars === null) {
+        if (orders === null) {
             console.log("response from query " + orders);
             res.send({ 'status': false, "message": "No Records Found" })
 
