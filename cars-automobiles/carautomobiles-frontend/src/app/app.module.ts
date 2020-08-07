@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddCarsComponent } from './add-cars/add-cars.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListCarsComponent } from './list-cars/list-cars.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddCarsComponent
+    AddCarsComponent,
+    ListCarsComponent
   ],
   imports: [
     BrowserModule,

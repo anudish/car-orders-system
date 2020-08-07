@@ -1,0 +1,50 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h2 class="d-flex justify-content-center" style="margin-top: 10px;">List all cars</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <form [formGroup]="searchCar" id="searchCar" novalidate="">
+                <div class="row no-gutters align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <input class="form-control form-control-borderless" name="carName" id="carName"
+                                formControlName="carName" type="search" placeholder="Search cars">
+                            <div *ngIf="(searchCar.get('carName').invalid && onInit) || 
+                                (searchCar.get('carName').invalid && (searchCar.get('carName').dirty ||
+                                searchCar.get('carName').touched))" class="alert alert-danger">
+                                <div *ngIf="searchCar.get('carName').errors.required">
+                                    Please provide car name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-group">
+                            <button class="btn btn-success" (click)="onSubmit()" type="submit">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row row-cols-4">
+        <div class="col-3" *ngFor="let bp of businessProducts">
+            <div class="embed-responsive embed-responsive-1by1">
+                <img class="card-img-top embed-responsive-item img-fluid" src="/assets/logo.png" alt="Card image cap">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" class="text-center">{{bp.car}} {{bp.model}}</h5>
+                <p class="card-text">
+                    {{bp.description}}
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
