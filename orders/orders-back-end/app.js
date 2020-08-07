@@ -126,7 +126,35 @@ app.post('/sendEmail', (req, res) => {
                 console.error(error.response.body)
                 res.send({ 'status': false, "message": "Invalid email" })
             }
+        });
 
+});
+
+app.post('/sendOrderConfirmation', (req, res) => {
+
+    let to = req.body.email;
+    let carName = req.body.carName;
+    let model = req.body.model;
+    let price = req.body.price;
+    let firstName = req.body.firstName;
+    let text = "Hello " + firstName + " Your order containing the " + carName + " " + model + " with the total price of $" + price + " has been placed successfully";
+
+    const msg = {
+        to: to,
+        from: 'thanigaiselvan@dal.ca',
+        subject: 'Order confirmation',
+        text: text
+    };
+    sgMail
+        .send(msg)
+        .then(() => {
+            res.send({ 'status': true, "message": "email sent successfully" })
+        }, error => {
+            console.error(error);
+            if (error.response) {
+                console.error(error.response.body)
+                res.send({ 'status': false, "message": "Invalid email" })
+            }
         });
 
 });
