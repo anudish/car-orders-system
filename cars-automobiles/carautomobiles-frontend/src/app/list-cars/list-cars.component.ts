@@ -9,9 +9,10 @@ import { CarsService } from '../cars.service';
 })
 export class ListCarsComponent implements OnInit {
 
-  businessProducts: any[];
+  businessProducts: any[] = [];
   searchCar: FormGroup;
   onInit;
+  showError = false;
 
   constructor(private carService: CarsService) {
     this.searchCar = new FormGroup({
@@ -26,6 +27,10 @@ export class ListCarsComponent implements OnInit {
       console.log("Service", data.message);
       this.businessProducts = data.message;
     });
+
+    if (this.businessProducts.length == 0) {
+      this.showError = true;
+    }
   }
 
   onSubmit() {
@@ -40,6 +45,10 @@ export class ListCarsComponent implements OnInit {
         console.log("Service", data.message);
         this.businessProducts = data.message;
       });
+
+      if (this.businessProducts.length == 0) {
+        this.showError = true;
+      }
 
 
     }
