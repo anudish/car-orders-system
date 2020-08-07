@@ -307,7 +307,8 @@ app.post('/updateCar', (req, res) => {
                     model: targetCarObj.model,
                     car_name: targetCarObj.car_name,
                     description: targetCarObj.description,
-                    image_url: targetCarObj.image_url
+                    image_url: targetCarObj.image_url,
+                    price: targetCarObj.price
 
                 }, {
                     where: {
@@ -330,27 +331,6 @@ app.post('/updateCar', (req, res) => {
 
     })
 
-
-
-
-    // return sequelize.transaction(function (t) {
-    //     return Cars.update({
-    //         model: model,
-    //     }, {
-    //         where: {
-    //             car_name: carName,
-    //         }
-    //     }, { transaction: t }).then(function (car) {
-    //         console.log('check' + car)
-    //         res.send({ 'status': true, "message": "Records Updated Successfully" })
-    //     });
-    // }).catch(function (err) {
-    //     // Transaction has been rolled back
-    //     // err is whatever rejected the promise chain returned to the transaction callback
-    //     console.log('rollback' + err)
-    //     res.send({ 'status': false, "message": err.message })
-
-    // });
 
 });
 
