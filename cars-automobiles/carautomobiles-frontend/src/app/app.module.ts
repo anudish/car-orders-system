@@ -9,13 +9,17 @@ import { ListCarsComponent } from './list-cars/list-cars.component';
 import { HttpClientModule } from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OrderhistoryComponent } from './orderhistory/orderhistory.component';
+
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AddCarsComponent,
-    ListCarsComponent
+    ListCarsComponent,
+    OrderhistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
