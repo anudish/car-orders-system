@@ -65,6 +65,68 @@ var Accessories = sequelize.define('accessories', {
     tableName: 'accessories'
 });
 
+
+var AccessoriesOrders = sequelize.define('accessoriesOrders', {
+
+    order_id:
+    {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+
+    },
+    carName:
+    {
+        type: Sequelize.STRING,
+        allowNull: false,
+        primaryKey: true,
+
+    },
+    model:
+    {
+        type: Sequelize.STRING,
+        allowNull: false,
+        primaryKey: true,
+
+
+    },
+    accessoryId:
+    {
+        type: Sequelize.STRING,
+        allowNull: false,
+        primaryKey: true,
+
+    },
+    qtyOfAccessories:
+    {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    totalPrice:
+    {
+        type: Sequelize.INTEGER,
+    },
+    user_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+    },
+    // createdAt: {
+    //     field: 'created_at',
+    //     type: Sequelize.DATE,
+    // },
+    // updatedAt: {
+    //     field: 'updated_at',
+    //     type: Sequelize.DATE,
+    // },
+    
+}, {
+    tableName: 'accessoriesOrders',
+    timestamps: false
+});
+
+
 app.listen(port, '0.0.0.0', () => console.log(`Company Y app listening on port ${port}!`))
 
 // app.get('/getOneAccessory/:accessoryName/:carName', (req, res) => {
@@ -274,5 +336,158 @@ app.post('/deleteAccessory', (req, res) => {
         // err is whatever rejected the promise chain returned to the transaction callback
     });
 })
+
+// CRUD FOR ORDERS
+app.get('/getAllAccessoriesOrders', (req, res) => {
+
+    AccessoriesOrders.findAll({}).then(function (AccessoriesOrders, err) {
+        if (err) {
+            throw err;
+        }
+        console.log("RESPONSE " + AccessoriesOrders);
+        if (AccessoriesOrders === null) {
+            console.log("response from server " + AccessoriesOrders);
+            res.send({ 'status': false, "message": "No orders Found" })
+
+        }
+        else {
+            console.log(" success response from query " + AccessoriesOrders);
+            res.send({ 'status': true, 'message': AccessoriesOrders });
+        }
+
+    }).catch(error => {
+        console.log('Error occurred', error.message);
+        res.send({ 'status': false, "message": error.message })
+    });;
+});
+
+
+app.get('/getAllAccessoriesOrdersbyModel', (req, res) => {
+    let model = req.body.model;
+
+    AccessoriesOrders.findAll({
+    where: {
+        model: model
+    }
+    
+  }).then(function (AccessoriesOrders, err) {
+    if (err) {
+        throw err;
+    }
+    console.log("RESPONSE " + AccessoriesOrders);
+    if (AccessoriesOrders === null) {
+        console.log("response from server " + AccessoriesOrders);
+        res.send({ 'status': false, "message": "No orders Found" })
+
+    }
+    else {
+        console.log(" success response from query " + AccessoriesOrders);
+        res.send({ 'status': true, 'message': AccessoriesOrders });
+    }
+
+}).catch(error => {
+    console.log('Error occurred', error.message);
+    res.send({ 'status': false, "message": error.message })
+});;
+});
+
+app.get('/getAllAccessoriesOrdersbyCar', (req, res) => {
+    let carName = req.body.carName;
+
+    AccessoriesOrders.findAll({
+    where: {
+        carName: carName
+    }
+    
+  }).then(function (AccessoriesOrders, err) {
+    if (err) {
+        throw err;
+    }
+    console.log("RESPONSE " + AccessoriesOrders);
+    if (AccessoriesOrders === null) {
+        console.log("response from server " + AccessoriesOrders);
+        res.send({ 'status': false, "message": "No orders Found" })
+
+    }
+    else {
+        console.log(" success response from query " + AccessoriesOrders);
+        res.send({ 'status': true, 'message': AccessoriesOrders });
+    }
+
+}).catch(error => {
+    console.log('Error occurred', error.message);
+    res.send({ 'status': false, "message": error.message })
+});;
+});
+
+
+app.post('/insertAccessoriesOrders', (req, res) => {
+    return sequelize.transaction(function (t) {
+        let accessoryId = req.body.accessoryId;
+        let user_id = req.body.user_id;
+        let carName = req.body.carName;
+        let order_id = req.body.order_id;
+        let model = req.body.model;
+        let totalPrice = req.body.totalPrice;
+        let qtyOfAccessories = req.body.qtyOfAccessories;
+
+        // console.log(accessoryName +", " + price + ", "+ carName +", " + qty + ", " + model);
+        return AccessoriesOrders.create({
+            model: model,
+            accessoryId: accessoryId,
+            carName: carName,
+            qty: qty,
+            user_id: user_id,
+            order_id: order_id,
+            totalPrice: totalPrice,
+            qtyOfAccessories: qtyOfAccessories
+            
+
+        }, { transaction: t }).then(function (AccessoriesOrders) {
+            console.log('check' + AccessoriesOrders)
+            res.send({ 'status': true, "message": "Records Inserted Successfully" })
+
+        });
+    }).catch(function (err) {
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+        console.log('rollback' + err)
+        res.send({ 'status': false, "message": err.message })
+
+    });;
+});
+app.post('/deleteAccessoryOrder', (req, res) => {
+    let accessoryId = req.body.accessoryId;
+    let model = req.body.model;
+    let carName = req.body.carName;
+    let user_id = req.body.user_id;
+    let order_id = req.body.order_id;
+
+    return sequelize.transaction(function (t) {
+        return Accessories.destroy({
+            where: {
+                order_id: order_id,
+                accessoryId: accessoryId,
+                model : model,
+                carName : carName,
+                user_id : user_id,
+            }
+        }, { transaction: t }).then(function (accessory) {
+            console.log('check' + accessory)
+            if(accessory == 0){
+                res.send({ 'status': true, "message": "Data with the submitted parameter not found" })
+            }else{
+                res.send({ 'status': true, "message": "Records Deleted Successfully" })
+            }
+            
+        });
+    }).catch(function (err) {
+        console.log('rollback' + err)
+        // Transaction has been rolled back
+        res.send({ 'status': false, "message": err.message })
+        // err is whatever rejected the promise chain returned to the transaction callback
+    });
+})
+
 
 module.exports = app;
