@@ -1,0 +1,6 @@
+table {
+    width: 100%;
+  }
+  .embed-responsive .card-img-top {
+    object-fit: contain;
+}

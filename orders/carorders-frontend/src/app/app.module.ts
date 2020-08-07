@@ -5,16 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule, MatSelectModule, MatOptionModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatIconModule, MatButtonModule, MatToolbarModule, MatCheckboxModule, MatTableModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
+import { ProductInfoComponent } from './product-info/product-info.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule, MatAutocompleteModule, MatButtonModule, MatIconModule, MatToolbarModule, MatCheckboxModule, MatTableModule } from '@angular/material'
 
 @NgModule({
   declarations: [
@@ -22,6 +19,7 @@ import { MatInputModule, MatAutocompleteModule, MatButtonModule, MatIconModule, 
     RegisterComponent,
     LoginComponent,
     HeaderComponent,
+     ProductInfoComponent,
     HomepageComponent
   ],
   imports: [
@@ -31,6 +29,10 @@ import { MatInputModule, MatAutocompleteModule, MatButtonModule, MatIconModule, 
     MatSnackBarModule,
     HttpClientModule,
     ReactiveFormsModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserAnimationsModule,
+
     MatSelectModule,
     MatOptionModule,
     MatFormFieldModule,
@@ -41,6 +43,8 @@ import { MatInputModule, MatAutocompleteModule, MatButtonModule, MatIconModule, 
     MatToolbarModule,
     MatCheckboxModule,
     MatTableModule,
+    
+
     FormsModule
   ],
   providers: [],

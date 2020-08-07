@@ -1,0 +1,115 @@
+
+<div class="container-fluid" style="margin-top: 10px;">
+
+<div class="row row-cols-4">
+    <div class="col-4 "  >
+        <div (click)="loadCarDetails(bp.car_name,bp.model)">
+        <div class="embed-responsive embed-responsive-1by1">
+            <img class="card-img-top embed-responsive-item img-fluid" src="{{imgUrl}}" alt="Card image cap">
+        </div>
+        
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card-body" style="margin-top: 20%;">
+            <h5 class="card-title" class="text-center">{{carName}} - {{model}}</h5>
+            <p class="card-text text-center">
+                {{description}}
+            </p>
+        </div>
+    </div>
+    <div class="col-4"></div>
+    
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-6">
+                <h5 class="card-title" class="text-center">Select additional accessories for {{carName}} - {{model}}</h5>
+
+            </div>
+            <div class="col-6">
+                <h5 class="card-title" class="text-center">Price details</h5>
+
+            </div>
+        </div>
+        <div class="row" >
+            
+            <div class="col-6 d-flex justify-content-center">
+                <br>
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                            </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation();addAccessory(row)"
+                                (change)=" $event ? selection.toggle(row): null" [checked]="selection.isSelected(row)"
+                                [aria-label]="checkboxLabel(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="accessoryName">
+                        <th mat-header-cell *matHeaderCellDef> Accessory Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.accessoryName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef> Cost </th>
+                        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                    </tr>
+                </table>
+        
+            </div>
+            <div class="col-6">
+                <div class="row" class="text-center">
+                <p >
+                    Please review the price and products before purchasing.
+                </p>
+                </div>
+                <div class="row" class="text-center" >
+                    <table>
+                        <tr>
+                            <td><strong>Products</strong></td>
+                            <td>Cost</td>
+                        </tr>
+                        <tr>
+                            <td><strong>{{carName}}-{{model}} Base Price</strong></td>
+                            <td>{{basePrice}}</td>
+                        </tr>
+                        <tr *ngFor="let el of accessoriesDetails;">
+                            <td><strong>{{el.accessoryName}}</strong></td>
+                            <td>{{el.price}}</td>
+                        </tr>
+                        <tr >
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr >
+                            <td><strong>Total Price</strong></td>
+                            <td>{{totalPrice}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="row" style="margin-top: 1%;" >
+                    <div class="col-3"></div>
+                    <div class="col-6 d-flex justify-content-center"><button mat-raised-button color="primary"
+                            (click)="submitOrder()">Order</button></div>
+                    <div class="col-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
