@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CarService } from '../car.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-product-info',
@@ -23,7 +24,7 @@ export class ProductInfoComponent implements OnInit {
   displayedColumns: string[] = ['select', 'position', 'accessoryName', 'price'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
-  constructor(private carAccessoriesService: CarAccessoriesService, private carService: CarService, private route: Router) { }
+  constructor(private carAccessoriesService: CarAccessoriesService, private carService: CarService, private route: Router, private notificationService: NotificationService) { }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -92,8 +93,6 @@ export class ProductInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    // var carInfoObj = {'car_name': 'BMW', 'model': 'T', 'description':'dummy', 'image_url':'https://carinventorybucket.s3.amazonaws.com/bmw-x6-2076.jpg', 'price':50000}
-    // sessionStorage.setItem('carInfo', JSON.stringify(carInfoObj))
     var carInfo = JSON.parse(sessionStorage.getItem('carInfo'))
     if (carInfo){
       this.imgUrl = carInfo['image_url']
@@ -141,6 +140,20 @@ export class ProductInfoComponent implements OnInit {
         if(res['status']){
           //insert into company y order history
           messages.push(res['message'])
+          this.notificationService.notifyDealers({
+            "dealer":"ABT-Car Dealers",
+            "user": email,
+            "carName":this.carName,
+            "model":this.model,
+            "price":this.basePrice,
+            "accessories":this.accessoriesDetails
+          }).subscribe(res=>{
+            if(res['status']){
+              console.log('check success')
+            }
+
+          })
+
 
         }else{
           messages.push(res['message'])

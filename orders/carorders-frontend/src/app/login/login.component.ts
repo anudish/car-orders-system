@@ -113,7 +113,13 @@ export class LoginComponent implements OnInit {
       this.orderService.validateOTP(otpbody).subscribe(data => {
 
         if (data.status) {
-          this.route.navigate([""]);
+          var carInfo = JSON.parse(sessionStorage.getItem('carInfo'))
+          if(carInfo){
+            this.route.navigate(['productInfo'])
+          }else{
+            this.route.navigate([""]);
+          }
+          
 
         }
       })
