@@ -46,12 +46,60 @@ var Cars = sequelize.define('cars', {
     description: {
         type: Sequelize.STRING
     },
-    price:{
+    price: {
         type: Sequelize.INTEGER
     }
 }, {
     tableName: 'cars'
 });
+
+var orderHistory = sequelize.define('orderHistory', {
+    car_name:
+    {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    car_id:
+    {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+
+    },
+    model:
+    {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    createdAt: {
+        type: Sequelize.TIME
+    },
+    updatedAt: {
+        type: Sequelize.TIME
+    },
+    userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    totalPrice: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
+    // ,
+    // accessoryId: {
+    //     type: Sequelize.INTEGER,
+    //     allowNull: false
+    // },
+    // quantityOfAccessories: {
+    //     type: Sequelize.INTEGER,
+    //     allowNull: false
+    // }
+
+},
+    {
+        tableName: 'orderHistory'
+    });
 
 app.listen(port, '0.0.0.0', () => console.log(`Company X app listening on port ${port}!`))
 
@@ -167,7 +215,7 @@ app.post('/insertIntoCar', (req, res) => {
             model: model,
             image_url: image_url,
             description: description,
-            price : price
+            price: price
 
         }, { transaction: t }).then(function (car) {
             console.log('cehck' + car)
@@ -180,6 +228,56 @@ app.post('/insertIntoCar', (req, res) => {
         console.log('rollback' + err)
         res.send({ 'status': false, "message": err.message })
 
+    });;
+});
+
+app.post('/insertOrderHistory', (req, res) => {
+    return sequelize.transaction(function (t) {
+        let car_name = req.body.car_name;
+        let model = req.body.model;
+        let createdAt = req.body.createdAt;
+        let userId = req.body.userId;
+        let totalPrice = req.body.totalPrice;
+
+        return orderHistory.create({
+            car_name: car_name,
+            model: model,
+            userId: userId,
+            totalPrice: totalPrice
+        }, { transaction: t }).then(function (orderHistory) {
+            console.log('cehck' + orderHistory)
+            res.send({ 'status': true, "message": "Records Inserted Successfully" })
+
+        });
+    }).catch(function (err) {
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+        console.log('rollback' + err)
+        res.send({ 'status': false, "message": err.message })
+
+    });;
+});
+
+app.get('/getAllOrders', (req, res) => {
+
+    orderHistory.findAll({}).then(function (orders, err) {
+        if (err) {
+            throw err;
+        }
+        console.log("RESPONSE " + orders);
+        if (cars === null) {
+            console.log("response from query " + orders);
+            res.send({ 'status': false, "message": "No Records Found" })
+
+        }
+        else {
+            console.log(" success response from query " + orders);
+            res.send({ 'status': true, 'message': orders });
+        }
+
+    }).catch(error => {
+        console.log('Error occurred', error.message);
+        res.send({ 'status': false, "message": error.message })
     });;
 });
 
