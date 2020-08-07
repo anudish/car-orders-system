@@ -79,7 +79,7 @@ var orderHistory = sequelize.define('orderHistory', {
         type: Sequelize.TIME
     },
     userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
     },
     totalPrice: {
@@ -235,7 +235,6 @@ app.post('/insertOrderHistory', (req, res) => {
     return sequelize.transaction(function (t) {
         let car_name = req.body.car_name;
         let model = req.body.model;
-        let createdAt = req.body.createdAt;
         let userId = req.body.userId;
         let totalPrice = req.body.totalPrice;
 
@@ -253,7 +252,7 @@ app.post('/insertOrderHistory', (req, res) => {
         // Transaction has been rolled back
         // err is whatever rejected the promise chain returned to the transaction callback
         console.log('rollback' + err)
-        res.send({ 'status': false, "message": err.message })
+        res.send({ 'status': false, "message": "Error while placing car order! "+err.message })
 
     });;
 });

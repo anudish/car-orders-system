@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { CarService } from '../car.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class HomepageComponent implements OnInit {
   searchBarControl = new FormControl();
   carDetails: any[] = [];
 
-  constructor(private _snackBar: MatSnackBar, private carService: CarService) { }
+  constructor(private _snackBar: MatSnackBar, private carService: CarService, private route: Router) { }
 
   ngOnInit() {
     sessionStorage.removeItem('carInfo');
@@ -40,7 +41,7 @@ export class HomepageComponent implements OnInit {
   loadCarDetails(car_details) {
     var carInfo = { 'car_name': car_details['car_name'], 'model': car_details['model'], description: car_details['description'], image_url: car_details['image_url'], price: car_details['price'] }
     sessionStorage.setItem('carInfo', JSON.stringify(carInfo))
-    // this.route.navigate(['updatecar'])
+    this.route.navigate(['productInfo'])
   }
 
 }

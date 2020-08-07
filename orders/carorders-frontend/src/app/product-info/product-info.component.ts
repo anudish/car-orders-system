@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CarAccessoriesService } from '../car-accessories.service';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
+import { CarService } from '../car.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-info',
@@ -21,7 +23,7 @@ export class ProductInfoComponent implements OnInit {
   displayedColumns: string[] = ['select', 'position', 'accessoryName', 'price'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
-  constructor(private carAccessoriesService: CarAccessoriesService) { }
+  constructor(private carAccessoriesService: CarAccessoriesService, private carService: CarService, private route: Router) { }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -90,8 +92,8 @@ export class ProductInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    var carInfoObj = {'car_name': 'BMW', 'model': 'T', 'description':'dummy', 'image_url':'https://carinventorybucket.s3.amazonaws.com/bmw-x6-2076.jpg', 'price':50000}
-    sessionStorage.setItem('carInfo', JSON.stringify(carInfoObj))
+    // var carInfoObj = {'car_name': 'BMW', 'model': 'T', 'description':'dummy', 'image_url':'https://carinventorybucket.s3.amazonaws.com/bmw-x6-2076.jpg', 'price':50000}
+    // sessionStorage.setItem('carInfo', JSON.stringify(carInfoObj))
     var carInfo = JSON.parse(sessionStorage.getItem('carInfo'))
     if (carInfo){
       this.imgUrl = carInfo['image_url']
@@ -125,7 +127,29 @@ export class ProductInfoComponent implements OnInit {
     this.accessoriesDetails.forEach(element => {
       totalPrice += element.price
     });
+    var email = sessionStorage.getItem('email')
+    var orderObj = { 'basePrice': this.basePrice,'carName':this.carName, 'model':this.model, 'userId': email, 'totalPrice': this.totalPrice, 'accessories': this.accessoriesDetails}
+    var messages =[]
+    if(email){
+      this.carService.insertCarOrderHistory({
+        'car_name': this.carName,
+        'model': this.model,
+        'userId': email,
+        'totalPrice': this.basePrice
+    
+    }).subscribe(res=>{
+        if(res['status']){
+          //insert into company y order history
+          messages.push(res['message'])
 
+        }else{
+          messages.push(res['message'])
+        }
+      })
+    }else{
+      sessionStorage.setItem('orderObj',JSON.stringify(orderObj))
+      this.route.navigate(["login"])
+    }
     console.log('totalPrice: '+ totalPrice)
   }
 }
