@@ -28,6 +28,11 @@ export class CarsService {
   insertCar(data: any): Observable<any> {
     let API_URL = this.apiUrl + '/insertIntoCar';
     return this.http.post(API_URL, data)
+  }
+
+  getCarBySearch(carName): Observable<any> {
+    let API_URL = this.apiUrl + '/getCarBySearch/' + carName;
+    return this.http.get(API_URL)
       .pipe()
   }
 }
