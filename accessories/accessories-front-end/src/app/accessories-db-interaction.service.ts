@@ -1,35 +1,39 @@
 import { Injectable } from '@angular/core';
 import { throwError, Observable } from 'rxjs';
 import { tap, catchError, map} from 'rxjs/operators';
-import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccessoriesDbInteractionService {
-  apiUrl: string = 'http://localhost:3000/';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
-
+  apiUrl: string = 'http://localhost:3000';
+  
   constructor(private http: HttpClient) { }
   private handleError(error: any) {
     console.log(error);
     return throwError(error);
   }
 
-  getAllAccessories(){
+  getAllAccessories(): Observable<any>{
     let API_URL = this.apiUrl + '/getAllAccessories';
-    return this.http.get(API_URL);
+    return this.http.get(API_URL).pipe(
+      tap(data => console.log(data)),catchError(this.handleError)
+    );
     
   }
 
-  getUniqueParts(){
-    let API_URL = this.apiUrl + '/getUniqueAccessory';
-    return this.http.get(API_URL);
+  getUniqueAccessory(accsseoryName:string){
+    let headers: HttpHeaders = new HttpHeaders().set('Content-Type','application/json');
+    let params: HttpParams = new HttpParams().set('accessoryName',accsseoryName);
+    let API_URL = this.apiUrl + '/getOneAccessory';
+    return this.http.get(API_URL,{headers,params}).pipe(
+      tap(data=>console.log(data)),catchError(this.handleError)
+    );
     
   }
 
-
-  updateParts(body): Observable<any> {
+  updateAccessory(body): Observable<any> {
     let API_URL = this.apiUrl + '/updateAccessory';
     return this.http.put(API_URL, body)
       .pipe(
@@ -38,17 +42,20 @@ export class AccessoriesDbInteractionService {
 
   }
 
-  addParts(body): Observable<any> {
-    let API_URL = this.apiUrl + '/addAccessory';
+  addAccessory(body): Observable<any> {
+    let API_URL = this.apiUrl + '/insertIntoAccessories';
     return this.http.post(API_URL, body)
       .pipe(
         tap(data => console.log(data)),catchError(this.handleError)
       )
   }
 
-  getAllPartsOrder(){
-    let API_URL = this.apiUrl + '/getAllOrders';
-    return this.http.get(API_URL)
+  deleteAccessory(accessoryDetails): Observable<any>{
+    let API_URL = this.apiUrl + '/deleteAccessory';
+    debugger;
+    return this.http.post(API_URL,accessoryDetails).pipe(
+      tap(data => console.log(data)),catchError(this.handleError)
+    );
+ 
   }
-
 }
