@@ -23,10 +23,9 @@ export class ListCarsComponent implements OnInit {
     this.onInit = false;
 
     this.carService.getAllCars().subscribe(data => {
-      console.log("Service", data);
-
-    })
-    this.businessProducts = [{ car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }];
+      console.log("Service", data.message);
+      this.businessProducts = data.message;
+    });
   }
 
   onSubmit() {
@@ -34,9 +33,18 @@ export class ListCarsComponent implements OnInit {
       this.onInit = true;
     }
     else {
-      console.log(this.searchCar);
+
+      console.log(this.searchCar.get('carName').value);
+
+      this.carService.getCarBySearch(this.searchCar.get('carName').value).subscribe(data => {
+        console.log("Service", data.message);
+        this.businessProducts = data.message;
+      });
+
+
     }
   }
+
 
 
 }

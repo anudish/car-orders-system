@@ -1,4 +1,4 @@
-var Sequelize = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const express = require('express')
 const app = express()
 const port = 3001;
@@ -70,6 +70,50 @@ app.get('/getOneCar/:carName/:model', (req, res) => {
         }
         else {
             res.send(car);
+        }
+
+
+    }).catch(error => {
+
+        console.log('caught', error.message);
+        res.send({ 'status': false, "message": error.message })
+
+    });;
+
+
+});
+
+app.get('/getCarBySearch/:carName', (req, res) => {
+    let carName = req.params.carName + '%';
+    console.log("car name " + carName)
+
+    Cars.findAll({
+        where: {
+            [Op.or]: [
+                {
+                    car_name: {
+                        [Op.like]: carName
+                    }
+                },
+                {
+                    model: {
+                        [Op.like]: carName
+                    }
+                }
+            ]
+        }
+    }).then(function (car, err) {
+        if (err) {
+            throw err;
+        }
+        console.log("Response from sql " + car);
+
+        if (car === null) {
+
+            res.send({ 'status': false, "message": "No Records Found" })
+        }
+        else {
+            res.send({ 'status': true, "message": car });
         }
 
 

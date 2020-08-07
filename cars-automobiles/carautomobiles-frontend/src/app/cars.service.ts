@@ -17,4 +17,10 @@ export class CarsService {
     return this.http.get(API_URL)
       .pipe()
   }
+
+  getCarBySearch(carName): Observable<any> {
+    let API_URL = this.apiUrl + '/getCarBySearch/' + carName;
+    return this.http.get(API_URL)
+      .pipe()
+  }
 }

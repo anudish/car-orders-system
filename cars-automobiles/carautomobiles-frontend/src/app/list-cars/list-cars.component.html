@@ -34,15 +34,14 @@
     <div class="row row-cols-4">
         <div class="col-3" *ngFor="let bp of businessProducts">
             <div class="embed-responsive embed-responsive-1by1">
-                <img class="card-img-top embed-responsive-item img-fluid" src="/assets/logo.png" alt="Card image cap">
+                <img class="card-img-top embed-responsive-item img-fluid" src="{{bp.image_url}}" alt="Card image cap">
             </div>
             <div class="card-body">
-                <h5 class="card-title" class="text-center">{{bp.car}} {{bp.model}}</h5>
-                <p class="card-text">
+                <h5 class="card-title" class="text-center">{{bp.car_name}} {{bp.model}}</h5>
+                <p class="card-text text-center">
                     {{bp.description}}
                 </p>
             </div>
-
         </div>
 
     </div>
