@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AddCarsComponent } from './add-cars/add-cars.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListCarsComponent } from './list-cars/list-cars.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -13,12 +14,14 @@ import { ListCarsComponent } from './list-cars/list-cars.component';
     AppComponent,
     AddCarsComponent,
     ListCarsComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

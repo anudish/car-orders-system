@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CarsService } from '../cars.service';
 
 @Component({
   selector: 'app-list-cars',
@@ -12,7 +13,7 @@ export class ListCarsComponent implements OnInit {
   searchCar: FormGroup;
   onInit;
 
-  constructor() {
+  constructor(private carService: CarsService) {
     this.searchCar = new FormGroup({
       carName: new FormControl('', { validators: [Validators.required] })
     });
@@ -20,6 +21,11 @@ export class ListCarsComponent implements OnInit {
 
   ngOnInit() {
     this.onInit = false;
+
+    this.carService.getAllCars().subscribe(data => {
+      console.log("Service", data);
+
+    })
     this.businessProducts = [{ car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }, { car: 'Audi', model: 'R8', description: 'dummy' }];
   }
 

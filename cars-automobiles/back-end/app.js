@@ -138,7 +138,7 @@ app.post('/updateCar', (req, res) => {
 
     let car_name = req.body.car_name;
     let model = req.body.model;
-    
+
     let targetCarObj = req.body.change;
     console.log("req body car name" + car_name)
     console.log("req body car model" + model)
