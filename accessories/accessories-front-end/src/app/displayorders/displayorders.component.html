@@ -16,17 +16,26 @@
       <br/>
         <!--Card for Accessory in row-->
         <div class="row" style="margin-top:25px;">
-            <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let accessories of accessoryList | ordersfilter:accessoriesSearch">
+            <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let accessoriesOrders of accessoryList | ordersfilter:accessoriesSearch">
               <div class="card cardStyle accessories-card">
                     <div class="card-body">
                       <div class="row">
-                        <h3 class="card-title font-style"><b>Accessory ID :&nbsp;{{accessories.accessoryID}}</b></h3>
+                        <h3 class="card-title font-style"><b>Accessory ID :&nbsp;{{accessoriesOrders.accessoryId}}</b></h3>
                       </div> 
                       <div class="row">
-                      <h3 class="card-text font-style">Accessory Name :&nbsp;{{accessories.accessoryName}}</h3>
+                      <h3 class="card-text font-style">Car Name :&nbsp;{{accessoriesOrders.carName}}</h3>
                     </div>
                     <div class="row">
-                      <h4 class="card-text font-style">Unit Price :&nbsp;{{accessories.UnitPrice}}</h4>
+                      <h4 class="card-text font-style">Car Model :&nbsp;{{accessoriesOrders.model}}</h4>
+                    </div> 
+                    <div class="row">
+                      <h4 class="card-text font-style">TOtal Price :&nbsp;{{accessoriesOrders.totalPrice}}</h4>
+                    </div> 
+                    <div class="row">
+                      <h4 class="card-text font-style">Quantity of Accessory :&nbsp;{{accessoriesOrders.qtyOfAccessories}}</h4>
+                    </div> 
+                    <div class="row">
+                      <h4 class="card-text font-style">User ID :&nbsp;{{accessoriesOrders.user_id}}</h4>
                     </div> 
                     
                   </div>

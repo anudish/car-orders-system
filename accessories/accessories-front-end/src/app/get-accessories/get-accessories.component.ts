@@ -31,7 +31,6 @@ accessoriesSearch: String;
   popualateAccessoryDetails(){
     this.accessoriesService.getAllAccessories().subscribe((data) => {
       this.accessoryList = data.message as accessories[];
-      debugger;
     }, error => {
         console.log(error);
     });

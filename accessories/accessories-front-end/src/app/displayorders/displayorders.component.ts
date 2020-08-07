@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { accessoriesOrders } from './accessoriesOrders';
+import { AccessoriesDbInteractionService } from '../accessories-db-interaction.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-displayorders',
@@ -6,48 +10,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./displayorders.component.css']
 })
 export class DisplayordersComponent implements OnInit {
-  public accessoryList: any[] = [  
-    {
-    accessoryID: 1,
-    accessoryName: "Winter Tires",
-    UnitPrice: 100
-    },
-    {
-    accessoryID: 2,
-    accessoryName: "Music System",
-    UnitPrice: 300
-    },
-    {
-    accessoryID: 3,
-    accessoryName: "Car Jack",
-    UnitPrice: 150
-    },
-    {
-    accessoryID: 4,
-    accessoryName: "Axle",
-    UnitPrice: 2000
-    },
-    {
-    accessoryID: 5,
-    accessoryName: "AC",
-    UnitPrice: 500
-    },
-    {
-    accessoryID: 6,
-    accessoryName: "Airfilter",
-    UnitPrice: 2000
-    },
-    {
-    accessoryID: 7,
-    accessoryName: "Seat Covers",
-    UnitPrice: 500
-    }
-  ]; 
+  public accessoryList: accessoriesOrders[]; 
   accessoriesSearch: String;
   
-  constructor() { }
+  constructor(private router: Router, private accessoriesService: AccessoriesDbInteractionService,private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.populateAccessoryOrderDetails();
   }
+  populateAccessoryOrderDetails(){
+    this.accessoriesService.getAllAccessoriesOrders().subscribe((data) => {
+      this.accessoryList = data.message as accessoriesOrders[];
+    }, error => {
+        console.log(error);
+    });
 
+  }
 }

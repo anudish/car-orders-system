@@ -129,34 +129,6 @@ var AccessoriesOrders = sequelize.define('accessoriesOrders', {
 
 app.listen(port, '0.0.0.0', () => console.log(`Company Y app listening on port ${port}!`))
 
-// app.get('/getOneAccessory/:accessoryName/:carName', (req, res) => {
-//     let carName = req.params.carName;
-//     let accessoryName = req.params.accessoryName;
-//     console.log("car name " + carName)
-//     console.log("accessory name " + accessoryName)
-
-//     Cars.findOne({ where: { 'carName': carName, "accessoryName": accessoryName } }).then(function (accessory, err) {
-//         if (err) {
-//             throw err;
-//         }
-//         console.log("Response from sql " + accessory);
-
-//         if (accessory === null) {
-
-//             res.send({ 'status': false, "message": "No Records Found" })
-//         }
-//         else {
-//             res.send({ 'status': true, "message": accessory });
-//         }
-
-
-//     }).catch(error => {
-
-//         console.log('caught', error.message);
-//         res.send({ 'status': false, "message": error.message })
-
-//     });;
-// });
 
 app.get('/getOneAccessory/:accessoryName', (req, res) => {
     let accessoryName = req.params.accessoryName;
@@ -284,28 +256,6 @@ app.put('/updateAccessory', (req, res) => {
 
     })
 
-
-
-
-    // return sequelize.transaction(function (t) {
-    //     return Cars.update({
-    //         model: model,
-    //     }, {
-    //         where: {
-    //             car_name: carName,
-    //         }
-    //     }, { transaction: t }).then(function (car) {
-    //         console.log('check' + car)
-    //         res.send({ 'status': true, "message": "Records Updated Successfully" })
-    //     });
-    // }).catch(function (err) {
-    //     // Transaction has been rolled back
-    //     // err is whatever rejected the promise chain returned to the transaction callback
-    //     console.log('rollback' + err)
-    //     res.send({ 'status': false, "message": err.message })
-
-    // });
-
 });
 
 app.post('/deleteAccessory', (req, res) => {
@@ -431,7 +381,6 @@ app.post('/insertAccessoriesOrders', (req, res) => {
         let totalPrice = req.body.totalPrice;
         let qtyOfAccessories = req.body.qtyOfAccessories;
 
-        // console.log(accessoryName +", " + price + ", "+ carName +", " + qty + ", " + model);
         return AccessoriesOrders.create({
             model: model,
             accessoryId: accessoryId,

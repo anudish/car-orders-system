@@ -52,10 +52,16 @@ export class AccessoriesDbInteractionService {
 
   deleteAccessory(accessoryDetails): Observable<any>{
     let API_URL = this.apiUrl + '/deleteAccessory';
-    debugger;
     return this.http.post(API_URL,accessoryDetails).pipe(
       tap(data => console.log(data)),catchError(this.handleError)
     );
  
+  }
+
+  getAllAccessoriesOrders():Observable<any>{
+    let API_URL = this.apiUrl + '/getAllAccessoriesOrders';
+    return this.http.get(API_URL).pipe(
+      tap(data => console.log(data)),catchError(this.handleError)
+    );
   }
 }
