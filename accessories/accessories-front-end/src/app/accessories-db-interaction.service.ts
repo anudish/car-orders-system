@@ -7,7 +7,7 @@ import { HttpHeaders, HttpClient, HttpErrorResponse, HttpParams } from '@angular
   providedIn: 'root'
 })
 export class AccessoriesDbInteractionService {
-  apiUrl: string = 'http://localhost:3000';
+  apiUrl: string = 'http://localhost:3001';
   
   constructor(private http: HttpClient) { }
   private handleError(error: any) {
@@ -59,7 +59,7 @@ export class AccessoriesDbInteractionService {
   }
 
   getAllAccessoriesOrders():Observable<any>{
-    let API_URL = this.apiUrl + '/getAllAccessoriesOrders';
+    let API_URL = this.apiUrl + '/getAllOrderDetails';
     return this.http.get(API_URL).pipe(
       tap(data => console.log(data)),catchError(this.handleError)
     );

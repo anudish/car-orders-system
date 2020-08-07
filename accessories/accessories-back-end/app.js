@@ -407,10 +407,6 @@ app.get('/getOrderDetails', (req, res) => {
             throw err;
         }
         console.log("RESPONSE" + accessories + "anand");
-        if(accessories !== null){
-            console.log("its not null");
-            console.log(accessories);
-        }
         if (accessories[0] == null ) {
             console.log("response from query " + accessories);
             res.send({ 'status': false, "message": "No Records Found" })
@@ -442,4 +438,44 @@ app.get('/getOrderDetails', (req, res) => {
         res.send({ 'status': false, "message": error.message })
     });;
 });
+
+app.get('/getAllOrderDetails', (req, res) => {
+    AccessoriesOrders.findAll({ }).then(function (accessories, err) {
+        if (err) {
+            throw err;
+        }
+        console.log("RESPONSE" + accessories + "anand");
+        if (accessories[0] == null ) {
+            console.log("response from query " + accessories);
+            res.send({ 'status': false, "message": "No Records Found" })
+
+        }
+
+        else {
+            console.log(" success response from query " + accessories);
+            let temp = accessories;
+            let result = [{}];
+            result.pop();
+            temp.forEach(one => {
+                accesroies = one.accessoryList.split(",");
+                console.log(accesroies);
+                accesroies.pop();
+                resp = {
+                    carName : one.carName,
+                    model : one.model,
+                    totalPrice : one.totalPrice,
+                    accessoryList : accesroies,
+                    userId : one.userId
+                }
+                result.push(resp);
+            });
+            res.send({ 'status': true, 'message': result });
+        }
+
+    }).catch(error => {
+        console.log('Error occurred', error.message);
+        res.send({ 'status': false, "message": error.message })
+    });;
+});
+
 module.exports = app;
