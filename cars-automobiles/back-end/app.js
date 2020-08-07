@@ -45,6 +45,9 @@ var Cars = sequelize.define('cars', {
     },
     description: {
         type: Sequelize.STRING
+    },
+    price:{
+        type: Sequelize.INTEGER
     }
 }, {
     tableName: 'cars'
@@ -113,12 +116,14 @@ app.post('/insertIntoCar', (req, res) => {
         let model = req.body.model;
         let image_url = req.body.image_url;
         let description = req.body.description;
+        let price = req.body.price;
 
         return Cars.create({
             car_name: car_name,
             model: model,
             image_url: image_url,
-            description: description
+            description: description,
+            price : price
 
         }, { transaction: t }).then(function (car) {
             console.log('cehck' + car)
