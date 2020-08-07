@@ -12,7 +12,6 @@ import { ListCarsComponent } from '../list-cars/list-cars.component';
 })
 export class AddCarsComponent implements OnInit {
 
-  @Input() event: any;
 
   addCar: FormGroup;
   fileData: File = null;
@@ -21,6 +20,7 @@ export class AddCarsComponent implements OnInit {
   uploadedFilePath: string = null;
   imgUrl : string = null;
   onInit;
+  isActive: boolean = false;
 
   constructor(private carService: CarsService, private route: Router, private _snackBar: MatSnackBar) {
     this.addCar = new FormGroup({
@@ -34,10 +34,70 @@ export class AddCarsComponent implements OnInit {
 
   ngOnInit() {
     this.onInit = false;
-
-    if(event){
-      console.log('dd'+event)
+    this.isActive = false;
+    var carInfo = JSON.parse(sessionStorage.getItem('carInfo'))
+    if(carInfo){
+      this.carService.getCar(carInfo).subscribe(response=>{
+        console.log(response)
+        this.isActive = true;
+        this.imgUrl = response['image_url']
+        this.addCar.patchValue({
+          carName: response['car_name'], 
+          modelName: response['model'],
+          price: response['price'],
+          description: response['description']
+        });
+      })
     }
+  }
+
+  update(){
+    var carInfo = JSON.parse(sessionStorage.getItem('carInfo'))
+
+    this.carService.updateCar({
+      'car_name': carInfo['car_name'],
+      'model': carInfo['model'],
+      'change':{
+        'car_name': this.addCar.get('carName').value,
+        'model': this.addCar.get('modelName').value,
+        'image_url': this.imgUrl,
+        'description': this.addCar.get('description').value,
+        'price': this.addCar.get('price').value
+        
+      }
+    }).subscribe(response=>{
+      if(response['status']){
+        this._snackBar.open(response['message'], 'ok', {
+          duration: 30000
+        });
+        sessionStorage.removeItem('carInfo')
+        this.route.navigate([''])
+       
+      }else{
+        this._snackBar.open(response['message'], 'ok', {
+          duration: 30000
+        });
+      }
+    })
+  }
+
+  delete(){
+    this.carService.deleteCar({  'car_name': this.addCar.get('carName').value,
+    'model': this.addCar.get('modelName').value}).subscribe(response=>{
+      if(response['status']){
+        this._snackBar.open(response['message'], 'ok', {
+          duration: 30000
+        });
+        sessionStorage.removeItem('carInfo')
+        this.route.navigate([''])
+        
+      }else{
+        
+        this._snackBar.open(response['message'], 'ok', {
+          duration: 30000
+        });
+      }
+    });
   }
 
   fileProgress(fileInput: any) {
@@ -93,7 +153,10 @@ export class AddCarsComponent implements OnInit {
           this._snackBar.open(response['message'], 'ok', {
             duration: 30000
           });
+          sessionStorage.removeItem('carInfo')
+
           this.route.navigate([''])
+          
         }else{
           this._snackBar.open(response['message'], 'ok', {
             duration: 30000

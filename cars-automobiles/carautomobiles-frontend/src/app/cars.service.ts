@@ -30,6 +30,20 @@ export class CarsService {
     return this.http.post(API_URL, data)
   }
 
+  updateCar(data: any): Observable<any> {
+    let API_URL = this.apiUrl + '/updateCar';
+    return this.http.post(API_URL, data)
+  }
+
+  deleteCar(data: any): Observable<any> {
+    let API_URL = this.apiUrl + '/deleteCar';
+    return this.http.post(API_URL, data)
+  }
+  getCar(data: any): Observable<any> {
+    let API_URL = this.apiUrl + '/getOneCar/'+data['car_name']+'/'+data['model'];
+    return this.http.get(API_URL)
+  }
+
   getCarBySearch(carName): Observable<any> {
     let API_URL = this.apiUrl + '/getCarBySearch/' + carName;
     return this.http.get(API_URL)

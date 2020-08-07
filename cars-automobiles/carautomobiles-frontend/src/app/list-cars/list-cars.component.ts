@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CarsService } from '../cars.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-cars',
@@ -13,7 +14,7 @@ export class ListCarsComponent implements OnInit {
   searchCar: FormGroup;
   onInit;
 
-  constructor(private carService: CarsService) {
+  constructor(private carService: CarsService, private route: Router) {
     this.searchCar = new FormGroup({
       carName: new FormControl('', { validators: [Validators.required] })
     });
@@ -43,6 +44,12 @@ export class ListCarsComponent implements OnInit {
 
 
     }
+  }
+
+  loadCarDetails(car_name,model){
+    var carInfo = {'car_name':car_name,'model':model}
+    sessionStorage.setItem('carInfo',JSON.stringify(carInfo))
+    this.route.navigate(['updatecar'])
   }
 
 

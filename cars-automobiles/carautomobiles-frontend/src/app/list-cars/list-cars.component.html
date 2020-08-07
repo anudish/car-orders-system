@@ -32,7 +32,8 @@
     </div>
 
     <div class="row row-cols-4">
-        <div class="col-3" *ngFor="let bp of businessProducts">
+        <div class="col-3" *ngFor="let bp of businessProducts; "  >
+            <div (click)="loadCarDetails(bp.car_name,bp.model)">
             <div class="embed-responsive embed-responsive-1by1">
                 <img class="card-img-top embed-responsive-item img-fluid" src="{{bp.image_url}}" alt="Card image cap">
             </div>
@@ -41,6 +42,7 @@
                 <p class="card-text text-center">
                     {{bp.description}}
                 </p>
+            </div>
             </div>
         </div>
 
