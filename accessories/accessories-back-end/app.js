@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 const express = require('express')
 const app = express()
-const port = 3000;
+const port = 3002;
 const cors = require('cors');
 app.use(cors());
 
@@ -437,6 +437,36 @@ app.post('/deleteAccessoryOrder', (req, res) => {
         // err is whatever rejected the promise chain returned to the transaction callback
     });
 })
+
+app.post('/getAllAccessoriesForCar', (req, res) => {
+carName = req.body.carName;
+model = req.body.model;
+
+    Accessories.findAll({
+        where: {
+            carName: carName,
+            model: model
+        }
+    }).then(function (accessories, err) {
+        if (err) {
+            throw err;
+        }
+        console.log("RESPONSE " + accessories);
+        if (accessories === null) {
+            console.log("response from query " + accessories);
+            res.send({ 'status': false, "message": "No Records Found" })
+
+        }
+        else {
+            console.log(" success response from query " + accessories);
+            res.send({ 'status': true, 'message': accessories });
+        }
+
+    }).catch(error => {
+        console.log('Error occurred', error.message);
+        res.send({ 'status': false, "message": error.message })
+    });;
+});
 
 
 module.exports = app;
