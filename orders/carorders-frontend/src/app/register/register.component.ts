@@ -40,31 +40,31 @@ export class RegisterComponent implements OnInit {
 
       }
 
-      // this.orderService.registration(body).subscribe(data => {
+      this.orderService.registration(body).subscribe(data => {
 
-      //   if (data.success == true) {
-      //     this.route.navigate(["", "login"]);
-      //   }
+        if (data.status == true) {
+          console.log("data ", +data);
+          this.route.navigate(["", "login"]);
+        }
 
-      //   else if (data.success == "alreadyRegistered") {
+        else if (data.status == false) {
 
-      //     this.route.navigate(["", "login"]);
-
-      //   }
-
-      //   else {
-
-      //     this._snackBar.open(data.message, "Please retry", {
-      //       duration: 1500,
-      //     });
-      //   }
+          this._snackBar.open(data.message, "Please Login", {
+            duration: 2000,
+          });
+          this.route.navigate(["login"]);
 
 
-      // })
+        }
 
 
 
-      //this.route.navigate(["", "homepage"]);
+
+      })
+
+
+
+      // this.route.navigate(["", "homepage"]);
     }
   }
 }

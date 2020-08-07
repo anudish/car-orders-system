@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
 
   onLogin() {
     console.log(" login username " + this.loginForm.get('username').value)
-    console.log(" login password " + this.loginForm.get('password').value)
 
     if (this.loginForm.invalid) {
       this.onInit = true;
@@ -41,11 +40,38 @@ export class LoginComponent implements OnInit {
     else {
 
       let body = {
-        'username': this.loginForm.get('username').value,
+        'email': this.loginForm.get('username').value,
         'password': this.loginForm.get('password').value
       }
 
       this.orderService.login(body).subscribe(data => {
+
+        if (data.status) {
+
+          console.log("data " + data['message']['lastName']);
+          console.log("data " + data['message']['firstName']);
+          console.log("data " + data['message']['email']);
+
+
+          sessionStorage.setItem('firstName', data['message']['firstName'])
+          sessionStorage.setItem('lastName', data['message']['lastName'])
+          sessionStorage.setItem('email', data['message']['email'])
+          //sessionStorage.setItem('lastName',data['message']['lastName'])
+
+
+          this._snackBar.open(data.status, "Login Success", {
+            duration: 1500,
+          });
+          this.route.navigate(["login"]);
+        }
+        else{
+          this._snackBar.open(data.message, "Please Try Again", {
+            duration: 1500,
+          });
+          this.route.navigate(["login"]);
+          
+
+        }
 
 
       })
