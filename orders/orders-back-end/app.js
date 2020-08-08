@@ -159,59 +159,7 @@ app.post('/sendOrderConfirmation', (req, res) => {
 
 });
 
-app.get('/getOneCar/:carName/:model', (req, res) => {
-    let carName = req.params.carName;
-    let model = req.params.model;
-    console.log("car name " + carName)
-    console.log("model " + model)
 
-    Cars.findOne({ where: { 'car_name': carName, "model": model } }).then(function (car, err) {
-        if (err) {
-            throw err;
-        }
-        console.log("Response from sql " + car);
-
-        if (car === null) {
-
-            res.send({ 'status': false, "message": "No Records Found" })
-        }
-        else {
-            res.send(car);
-        }
-
-
-    }).catch(error => {
-
-        console.log('caught', error.message);
-        res.send({ 'status': false, "message": error.message })
-
-    });;
-
-
-});
-
-app.get('/getAllCars', (req, res) => {
-
-    Cars.findAll({}).then(function (cars, err) {
-        if (err) {
-            throw err;
-        }
-        console.log("RESPONSE " + cars);
-        if (cars === null) {
-            console.log("response from query " + cars);
-            res.send({ 'status': false, "message": "No Records Found" })
-
-        }
-        else {
-            console.log(" success response from query " + cars);
-            res.send({ 'status': true, 'message': cars });
-        }
-
-    }).catch(error => {
-        console.log('Error occurred', error.message);
-        res.send({ 'status': false, "message": error.message })
-    });;
-});
 
 
 app.post('/registerUser', (req, res) => {
@@ -261,6 +209,7 @@ app.post('/registerUser', (req, res) => {
     });;
 });
 
+
 app.post('/login', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
@@ -290,64 +239,112 @@ app.post('/login', (req, res) => {
         console.log('rollback' + err)
         res.send({ 'status': false, "message": err.message })
 
-    });;
+    });
 });
 
+var Orders = sequelize.define('accessoriesOrders', {
 
+    orderId:
+    {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
 
+    },
+    carName:
+    {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    model:
+    {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    totalPrice:
+    {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    userId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    accessoryName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    price:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
+    
+}, { 
+    tableName: 'orders',
+    timestamps: false
+});
 
+app.post('/insertUserOrders', (req, res) => {
+    let accessoryList = req.body.accessoryList;
 
-
-app.post('/updateCar', (req, res) => {
-
-    let car_name = req.body.car_name;
+    let totalPrice = req.body.totalPrice;
+    let carName = req.body.carName;
     let model = req.body.model;
+    let userId = req.body.userId;
 
-    let targetCarObj = req.body.change;
-    console.log("req body car name" + car_name)
-    console.log("req body car model" + model)
+    accessoryTableList= []
 
+    accessoriesUpdateList = []
+    accessoryList.forEach(one => {
+      
+        accessoryTableList.push({model: model,
+            carName: carName,
+            userId: userId.toLowerCase(),
+            totalPrice: totalPrice,
+            accessoryName : one.accessoryName,
+            price: one.price});
 
-    Cars.findOne({ where: { 'car_name': car_name, "model": model } }).then(function (car, err) {
-        if (err) {
-            throw err;
+    });
+
+    return sequelize.transaction(function (t) {
+        return Orders.bulkCreate(
+            accessoryTableList
+            , { transaction: t }).then( function (accessories) {           
+            console.log('check' + accessories)
+            
+            
+            res.send({ 'status': true, "message": "Records Inserted Successfully" })
+    
+        });
+    }).catch(function (err) {
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+        console.log('rollback' + err)
+        res.send({ 'status': false, "message": err.message })
+    
+    });;
+    
+})
+
+app.get('/getAllUserOrders/:userId', (req, res) => {
+    let userId = req.params.userId
+    Orders.findAll({
+        where:{
+            userId : userId
         }
-        console.log("Response from sql " + car);
+    }).then(function (order, err) {
+        if(err){
+            res.send({ 'status': false, "message": err.message })
 
-        if (car === null) {
-
-            res.send({ 'status': false, "message": "No Records Found" })
         }
-        else {
-            return sequelize.transaction(function (t) {
-                return Cars.update({
-                    model: targetCarObj.model,
-                    car_name: targetCarObj.car_name,
-                    description: targetCarObj.description,
-                    image_url: targetCarObj.image_url
-
-                }, {
-                    where: {
-                        car_name: car_name,
-                        model: model
-                    }
-                }, { transaction: t }).then(function (car) {
-                    console.log('check' + car)
-                    res.send({ 'status': true, "message": "Records Updated Successfully" })
-                });
-            }).catch(function (err) {
-                // Transaction has been rolled back
-                // err is whatever rejected the promise chain returned to the transaction callback
-                console.log('rollback' + err)
-                res.send({ 'status': false, "message": err.message })
-
-            });
-        }
-
-
+    res.send({ 'status': true, "message": order });
+        
     })
 
-});
+})
+
+
 
 
 

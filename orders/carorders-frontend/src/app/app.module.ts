@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProductInfoComponent } from './product-info/product-info.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
+import { OrdersComponent } from './orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
     HeaderComponent,
      ProductInfoComponent,
     HomepageComponent,
-    OrderSuccessComponent
+    OrderSuccessComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,

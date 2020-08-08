@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('firstName', data['message']['firstName'])
           sessionStorage.setItem('lastName', data['message']['lastName'])
           sessionStorage.setItem('email', data['message']['email'])
-          console.log(Math.floor(Math.random() * (9999) + 1000));
           let otpbody = {
             email: sessionStorage.getItem('email'),
             otp: Math.floor(Math.random() * (9999) + 1000)
@@ -70,7 +69,6 @@ export class LoginComponent implements OnInit {
           this.orderService.saveOTP(otpbody).subscribe(data => {
 
             if (data.status) {
-              console.log(otpbody)
               this.orderService.sendOTP(otpbody).subscribe(data => {
 
                 if (data.status) {

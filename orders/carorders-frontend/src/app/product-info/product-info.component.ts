@@ -5,6 +5,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { CarService } from '../car.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../notification.service';
+import { OrdersService } from '../orders.service';
 
 @Component({
   selector: 'app-product-info',
@@ -24,7 +25,9 @@ export class ProductInfoComponent implements OnInit {
   displayedColumns: string[] = ['select', 'position', 'accessoryName', 'price'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
-  constructor(private carAccessoriesService: CarAccessoriesService, private carService: CarService, private route: Router, private notificationService: NotificationService) { }
+  constructor(private carAccessoriesService: CarAccessoriesService
+    , private carService: CarService, private route: Router
+    , private orderService: OrdersService, private notificationService: NotificationService) { }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -129,6 +132,7 @@ export class ProductInfoComponent implements OnInit {
     });
     var email = sessionStorage.getItem('email')
     var orderObj = { 'basePrice': this.basePrice,'carName':this.carName, 'model':this.model, 'userId': email, 'totalPrice': this.totalPrice, 'accessories': this.accessoriesDetails}
+    sessionStorage.setItem('orderObj',JSON.stringify(orderObj))
     var messages =[]
     if(email){
       this.carService.insertCarOrderHistory({
@@ -139,35 +143,63 @@ export class ProductInfoComponent implements OnInit {
     
     }).subscribe(res=>{
         if(res['status']){
+
           //insert into company y order history
           messages.push(res['message'])
-          this.notificationService.notifyDealers({
-            "dealer":"ABT-Car Dealers",
-            "user": email,
-            "carName":this.carName,
-            "model":this.model,
-            "price":this.basePrice,
-            "accessories":this.accessoriesDetails
-          }).subscribe(res=>{
-            if(res['status']){
-              console.log('check success')
-              //notify user
-              this.notificationService.sendOrderConfirmation({
-                  "email": email,
-                  "carName": this.carName,
-                  "model": this.model,
-                  "price": this.totalPrice,
-                  "firstName": sessionStorage.getItem('firstName')
-                }).subscribe(r=>{
-                  if(r['status']){
-                    console.log('checjjivi')
-                    this.route.navigate(['orderSuccess'])
-                    //navigate to order success page
-                  }
-                })   
-            }
+          this.carAccessoriesService.insertOrderToAccessories({
+            'userId' : email,
+            'carName': this.carName,
+            'model': this.model,
+            'totalPrice':totalPrice,
+            'accessoryList':this.accessoriesDetails
 
+          }).subscribe(response=>{
+            if(response['status']){
+              messages.push(response['message'])
+              this.orderService.insertOrdersToCarDealer({
+                 'userId' : email,
+              'carName': this.carName,
+              'model': this.model,
+              'totalPrice':totalPrice,
+              'accessoryList':this.accessoriesDetails}).subscribe(val=>{
+                if(val['status']){
+                  messages.push(val['message'])
+                  this.notificationService.notifyDealers({
+                    "dealer":"ABT-Car Dealers",
+                    "user": email,
+                    "carName":this.carName,
+                    "model":this.model,
+                    "price":this.basePrice,
+                    "accessories":this.accessoriesDetails
+                  }).subscribe(res=>{
+                    if(res['status']){
+                      console.log('check success')
+    
+                      //notify user
+                      this.notificationService.sendOrderConfirmation({
+                          "email": email,
+                          "carName": this.carName,
+                          "model": this.model,
+                          "price": this.totalPrice,
+                          "firstName": sessionStorage.getItem('firstName')
+                        }).subscribe(r=>{
+                          if(r['status']){
+                            console.log('checjjivi')
+                            this.route.navigate(['orderSuccess'])
+                            //navigate to order success page
+                          }
+                        })   
+                    }
+        
+                  })
+                }
+              })
+             
+              
+            }
+            
           })
+          
 
 
         }else{
@@ -175,7 +207,7 @@ export class ProductInfoComponent implements OnInit {
         }
       })
     }else{
-      sessionStorage.setItem('orderObj',JSON.stringify(orderObj))
+      
       this.route.navigate(["login"])
     }
     console.log('totalPrice: '+ totalPrice)
