@@ -93,6 +93,7 @@ export class ProductInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.accessoriesDetails = []
     var carInfo = JSON.parse(sessionStorage.getItem('carInfo'))
     if (carInfo){
       this.imgUrl = carInfo['image_url']
@@ -150,6 +151,20 @@ export class ProductInfoComponent implements OnInit {
           }).subscribe(res=>{
             if(res['status']){
               console.log('check success')
+              //notify user
+              this.notificationService.sendOrderConfirmation({
+                  "email": email,
+                  "carName": this.carName,
+                  "model": this.model,
+                  "price": this.totalPrice,
+                  "firstName": sessionStorage.getItem('firstName')
+                }).subscribe(r=>{
+                  if(r['status']){
+                    console.log('checjjivi')
+                    this.route.navigate(['orderSuccess'])
+                    //navigate to order success page
+                  }
+                })   
             }
 
           })

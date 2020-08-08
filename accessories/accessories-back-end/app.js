@@ -1,8 +1,9 @@
 var Sequelize = require('sequelize');
 const express = require('express')
 const app = express()
-const port = 3001;
+const port = 3002;
 const cors = require('cors');
+const { where } = require('sequelize');
 app.use(cors());
 
 app.use(express.json());
@@ -95,9 +96,13 @@ var AccessoriesOrders = sequelize.define('accessoriesOrders', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    accessoryList: {
+    accessoryName: {
         type: Sequelize.STRING,
         allowNull: false,
+    },
+    price:{
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
     
 }, { 
@@ -338,39 +343,85 @@ app.put('/updateAccessory', (req, res) => {
 });
 
 app.post('/insertIntoAccessoriesOrders', (req, res) => {
-        let orderId = 0;
-        let Stringabc = "";
-        let accessoryList = req.body.accessoryList;
-        accessoryList.forEach(one => {
-            Stringabc += one + ",";
-        });
-        console.log(Stringabc);
-        let totalPrice = req.body.totalPrice;
-        let carName = req.body.carName;
-        let model = req.body.model;
-        let userId = req.body.userId;
-        console.log(userId +", " + totalPrice + ", "+ carName +", " + model);
-    return sequelize.transaction(function (t) {
-        return AccessoriesOrders.create({
-            model: model,
+    let Stringabc = "";
+    let accessoryList = req.body.accessoryList;
+    
+    console.log(Stringabc);
+    let totalPrice = req.body.totalPrice;
+    let carName = req.body.carName;
+    let model = req.body.model;
+    let userId = req.body.userId;
+
+    accessoryTableList= []
+
+    accessoriesUpdateList = []
+    accessoryList.forEach(one => {
+      
+        accessoryTableList.push({model: model,
             carName: carName,
             userId: userId.toLowerCase(),
             totalPrice: totalPrice,
-            accessoryList : Stringabc
+            accessoryName : one.accessoryName,
+            price: one.price});
 
-        }, { transaction: t }).then(function (accessories) {           
-            console.log('check' + accessories)
-            res.send({ 'status': true, "message": "Records Inserted Successfully" })
+    });
+    console.log(accessoryTableList);
+return sequelize.transaction(function (t) {
+    return AccessoriesOrders.bulkCreate(
+        accessoryTableList
+        , { transaction: t }).then( function (accessories) {           
+        console.log('check' + accessories)
+        accessoryTableList.forEach(element => {
+            console.log('checlllefjd')
+            var currentQuantity  = 0;
 
+            if(element.accessoryName === "winter_tires"){
+                currentQuantity = 4
+            }else if(element.accessoryName === "head_lights" || element.accessoryName === "back_lights"){
+                currentQuantity = 2
+            }else if(element.accessoryName === "music_system" ||
+            element.accessoryName === "smart_navigation_system" ||
+            element.accessoryName === "autopilot" || 
+            element.accessoryName === "safe_parking_system" || element.accessoryName === "all_round_protection_guard"
+            ){
+                currentQuantity = 1
+            }  
+           const acc = Accessories.findOne({where:{
+                accessoryName : element.accessoryName,
+                carName: carName,
+                model: model
+            }},{transaction: t}).then(function(ans){
+                Accessories.update({ qty: ans.qty - currentQuantity }, {
+                    where: {
+                        accessoryName : element.accessoryName,
+                        carName: carName,
+                        model: model
+                    }
+                }, { transaction: t }).then(function (accessory, err) {
+                    console.log('check' + accessory)
+                    if(err){
+                        throw err
+                    }
+                    //res.send({ 'status': true, "message": "Records Updated Successfully" })
+                })
+            })
+            
+
+        
         });
-    }).catch(function (err) {
-        // Transaction has been rolled back
-        // err is whatever rejected the promise chain returned to the transaction callback
-        console.log('rollback' + err)
-        res.send({ 'status': false, "message": err.message })
+        
+        res.send({ 'status': true, "message": "Records Inserted Successfully" })
 
-    });;
+    });
+}).catch(function (err) {
+    // Transaction has been rolled back
+    // err is whatever rejected the promise chain returned to the transaction callback
+    console.log('rollback' + err)
+    res.send({ 'status': false, "message": err.message })
+
+});;
 });
+
 
 app.post('/deleteAccessory', (req, res) => {
     let accessoryName = req.body.accessoryName;

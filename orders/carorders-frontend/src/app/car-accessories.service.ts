@@ -12,8 +12,8 @@ export class CarAccessoriesService {
   constructor(private http: HttpClient) { }
 
   getAllAssessoriesForCar(data): Observable<any> {
-    let API_URL = this.apiUrl + '/getAllAccessoriesForCar';
-    return this.http.post(API_URL,data)
+    let API_URL = this.apiUrl + '/getCarAccessories/'+data['carName']+'/'+data['model'];
+    return this.http.get(API_URL)
       .pipe()
   }
 

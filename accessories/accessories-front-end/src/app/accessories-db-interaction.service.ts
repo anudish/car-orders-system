@@ -7,7 +7,7 @@ import { HttpHeaders, HttpClient, HttpErrorResponse, HttpParams } from '@angular
   providedIn: 'root'
 })
 export class AccessoriesDbInteractionService {
-  apiUrl: string = 'http://localhost:3000';
+  apiUrl: string = 'http://localhost:3002';
   
   constructor(private http: HttpClient) { }
   private handleError(error: any) {
