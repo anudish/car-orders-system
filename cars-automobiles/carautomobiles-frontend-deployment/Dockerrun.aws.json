@@ -1,0 +1,11 @@
+{
+"AWSEBDockerrunVersion": "1",
+"Image": {
+"Name": "th876217/carautomobile-app"
+},
+"Ports": [
+{
+"ContainerPort": "8080"
+}
+]
+}

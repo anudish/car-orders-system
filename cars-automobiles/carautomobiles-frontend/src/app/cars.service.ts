@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CarsService {
 
-  apiUrl: string = 'http://localhost:3001';
+  apiUrl: string = 'https://0eqbl31hh4.execute-api.us-east-1.amazonaws.com/production';
   bucketUrl: string = 'https://cors-anywhere.herokuapp.com/https://fvsam1oq54.execute-api.us-east-1.amazonaws.com/default/car-inventory-upload-image-s3'
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -20,7 +20,7 @@ export class CarsService {
   }
 
   saveImgToS3(data: any): Observable<any> {
-    let API_URL = this.bucketUrl ;
+    let API_URL = this.bucketUrl;
     return this.http.post(API_URL, data)
       .pipe()
   }
@@ -40,7 +40,7 @@ export class CarsService {
     return this.http.post(API_URL, data)
   }
   getCar(data: any): Observable<any> {
-    let API_URL = this.apiUrl + '/getOneCar/'+data['car_name']+'/'+data['model'];
+    let API_URL = this.apiUrl + '/getOneCar/' + data['car_name'] + '/' + data['model'];
     return this.http.get(API_URL)
   }
 
