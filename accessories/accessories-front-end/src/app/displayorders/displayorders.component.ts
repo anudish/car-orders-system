@@ -20,6 +20,7 @@ export class DisplayordersComponent implements OnInit {
   }
   populateAccessoryOrderDetails(){
     this.accessoriesService.getAllAccessoriesOrders().subscribe((data) => {
+      debugger;
       this.accessoryList = data.message as accessoriesOrders[];
     }, error => {
         console.log(error);
