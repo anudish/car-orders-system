@@ -1,8 +1,10 @@
 var Sequelize = require('sequelize');
 const express = require('express');
+const cors = require('cors');
 const app = express()
 const port = 3003;
 app.use(express.json());
+app.use(cors());
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 var sequelize = new Sequelize('cars-orders-team18', 'companyz@companyzdb', 'qwerty@123', {
@@ -275,12 +277,12 @@ var Orders = sequelize.define('accessoriesOrders', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    price:{
+    price: {
         type: Sequelize.INTEGER,
         allowNull: false
     }
-    
-}, { 
+
+}, {
     tableName: 'orders',
     timestamps: false
 });
@@ -293,56 +295,58 @@ app.post('/insertUserOrders', (req, res) => {
     let model = req.body.model;
     let userId = req.body.userId;
 
-    accessoryTableList= []
+    accessoryTableList = []
 
     accessoriesUpdateList = []
     accessoryList.forEach(one => {
-      
-        accessoryTableList.push({model: model,
+
+        accessoryTableList.push({
+            model: model,
             carName: carName,
             userId: userId.toLowerCase(),
             totalPrice: totalPrice,
-            accessoryName : one.accessoryName,
-            price: one.price});
+            accessoryName: one.accessoryName,
+            price: one.price
+        });
 
     });
 
     return sequelize.transaction(function (t) {
         return Orders.bulkCreate(
             accessoryTableList
-            , { transaction: t }).then( function (accessories) {           
-            console.log('check' + accessories)
-            
-            
-            res.send({ 'status': true, "message": "Records Inserted Successfully" })
-    
-        });
+            , { transaction: t }).then(function (accessories) {
+                console.log('check' + accessories)
+
+
+                res.send({ 'status': true, "message": "Records Inserted Successfully" })
+
+            });
     }).catch(function (err) {
         // Transaction has been rolled back
         // err is whatever rejected the promise chain returned to the transaction callback
         console.log('rollback' + err)
         res.send({ 'status': false, "message": err.message })
-    
+
     });;
 
 
-    
-    
+
+
 })
 
 app.get('/getAllUserOrders/:userId', (req, res) => {
     let userId = req.params.userId
     Orders.findAll({
-        where:{
-            userId : userId
+        where: {
+            userId: userId
         }
     }).then(function (order, err) {
-        if(err){
+        if (err) {
             res.send({ 'status': false, "message": err.message })
 
         }
-    res.send({ 'status': true, "message": order });
-        
+        res.send({ 'status': true, "message": order });
+
     })
 
 })
