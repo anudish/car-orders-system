@@ -17,4 +17,10 @@ export class CarAccessoriesService {
       .pipe()
   }
 
+  insertOrderToAccessories(data): Observable<any> {
+    let API_URL = this.apiUrl + '/insertIntoAccessoriesOrders';
+    return this.http.post(API_URL,data)
+      .pipe()
+  }
+
 }

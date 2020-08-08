@@ -62,4 +62,21 @@ export class OrdersService {
         catchError(this.error)
       )
   }
+
+  insertOrdersToCarDealer(data): Observable<any> {
+    let API_URL = this.apiUrl + '/insertUserOrders'
+    return this.http.post(API_URL, data)
+      .pipe(
+        catchError(this.error)
+      )
+  }
+
+  getAllUserOrders(data): Observable<any> {
+    let API_URL = this.apiUrl + '/getAllUserOrders/'+data
+    return this.http.get(API_URL)
+      .pipe(
+        catchError(this.error)
+      )
+  }
+
 }
