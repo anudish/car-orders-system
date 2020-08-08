@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { MatSnackBarModule, MatSelectModule, MatOptionModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatIconModule, MatButtonModule, MatToolbarModule, MatCheckboxModule, MatTableModule } from '@angular/material';
+import { MatSnackBarModule, MatSelectModule, MatOptionModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatIconModule, MatButtonModule, MatToolbarModule, MatCheckboxModule, MatTableModule, MatSnackBar } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -47,6 +47,7 @@ import { OrdersComponent } from './orders/orders.component';
     MatToolbarModule,
     MatCheckboxModule,
     MatTableModule,
+    MatSnackBarModule,
     
 
     FormsModule

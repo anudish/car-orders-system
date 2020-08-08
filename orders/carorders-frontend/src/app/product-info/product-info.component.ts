@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CarAccessoriesService } from '../car-accessories.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSnackBar } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CarService } from '../car.service';
 import { Router } from '@angular/router';
@@ -27,7 +27,8 @@ export class ProductInfoComponent implements OnInit {
   selection = new SelectionModel<PeriodicElement>(true, []);
   constructor(private carAccessoriesService: CarAccessoriesService
     , private carService: CarService, private route: Router
-    , private orderService: OrdersService, private notificationService: NotificationService) { }
+    , private orderService: OrdersService, private notificationService: NotificationService, 
+    private snackBar: MatSnackBar) { }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -171,8 +172,8 @@ export class ProductInfoComponent implements OnInit {
                     "model":this.model,
                     "price":this.basePrice,
                     "accessories":this.accessoriesDetails
-                  }).subscribe(res=>{
-                    if(res['status']){
+                  }).subscribe(resp=>{
+                    if(resp['status']){
                       console.log('check success')
     
                       //notify user
@@ -187,15 +188,31 @@ export class ProductInfoComponent implements OnInit {
                             console.log('checjjivi')
                             this.route.navigate(['orderSuccess'])
                             //navigate to order success page
+                          }else{
+                            this.snackBar.open(r['message'], 'ok', {
+                              duration: 30000
+                            });
                           }
                         })   
+                    } else{
+                      this.snackBar.open(resp['message'], 'ok', {
+                        duration: 30000
+                      });
                     }
         
                   })
+                }else{
+                  this.snackBar.open(val['message'], 'ok', {
+                    duration: 30000
+                  });
                 }
               })
              
               
+            }else{
+              this.snackBar.open(response['message'], 'ok', {
+                duration: 30000
+              });
             }
             
           })
@@ -204,6 +221,9 @@ export class ProductInfoComponent implements OnInit {
 
         }else{
           messages.push(res['message'])
+          this.snackBar.open(res['message'], 'ok', {
+            duration: 30000
+          });
         }
       })
     }else{
