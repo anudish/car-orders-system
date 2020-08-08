@@ -1,8 +1,10 @@
 const { Sequelize, Op } = require('sequelize');
 const express = require('express')
+const cors = require('cors');
 const app = express()
 const port = 3001;
 app.use(express.json());
+app.use(cors());
 var sequelize = new Sequelize('cars-automobiles-team18', 'myuser@a6team18', 'qwerty@1234', {
     host: 'a6team18.mysql.database.azure.com',
     dialect: 'mysql',
@@ -18,20 +20,22 @@ var Cars = sequelize.define('cars', {
     car_name:
     {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     car_id:
     {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
+        // allowNull: false,
+        // primaryKey: true,
+        // autoIncrement: true
 
     },
     model:
     {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     },
     createdAt: {
         type: Sequelize.TIME
@@ -252,7 +256,7 @@ app.post('/insertOrderHistory', (req, res) => {
         // Transaction has been rolled back
         // err is whatever rejected the promise chain returned to the transaction callback
         console.log('rollback' + err)
-        res.send({ 'status': false, "message": "Error while placing car order! "+err.message })
+        res.send({ 'status': false, "message": "Error while placing car order! " + err.message })
 
     });;
 });

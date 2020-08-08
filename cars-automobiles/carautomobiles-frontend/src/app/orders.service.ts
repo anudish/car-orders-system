@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrdersService {
-  apiUrl: string = 'http://localhost:3001';
+  apiUrl: string = 'https://0eqbl31hh4.execute-api.us-east-1.amazonaws.com/production';
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
