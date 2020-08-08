@@ -1,7 +1,8 @@
-export interface accessoriesOrders{
-    carName : string;
+export interface accessoriesOrders {
+    carName: string;
     model: string;
     totalPrice: number;
-    accessoryList: any[];
-    userId:string;
+    accessoryList: string;
+    userId: string;
+    accessoryPrice: string;
 }

@@ -10,20 +10,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./displayorders.component.css']
 })
 export class DisplayordersComponent implements OnInit {
-  public accessoryList: accessoriesOrders[]; 
+  public accessoryList: accessoriesOrders[];
   accessoriesSearch: String;
-  
-  constructor(private router: Router, private accessoriesService: AccessoriesDbInteractionService,private _snackBar: MatSnackBar) { }
+
+  constructor(private router: Router, private accessoriesService: AccessoriesDbInteractionService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.populateAccessoryOrderDetails();
   }
-  populateAccessoryOrderDetails(){
+  populateAccessoryOrderDetails() {
     this.accessoriesService.getAllAccessoriesOrders().subscribe((data) => {
-      debugger;
+      // debugger;
+      console.log(data.message);
       this.accessoryList = data.message as accessoriesOrders[];
     }, error => {
-        console.log(error);
+      console.log(error);
     });
 
   }

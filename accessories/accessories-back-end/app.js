@@ -8,7 +8,7 @@ app.use(cors());
 
 app.use(express.json());
 var sequelize = new Sequelize('a6', 'admin', 'CompanyY1234', {
-//var sequelize = new Sequelize('a6', 'root', 'B00837967', {
+    //var sequelize = new Sequelize('a6', 'root', 'B00837967', {
     host: 'team-18-company-y-5409.cmxwmytkf5yh.us-east-1.rds.amazonaws.com',
     //host: 'localhost',
     dialect: 'mysql',
@@ -100,12 +100,12 @@ var AccessoriesOrders = sequelize.define('accessoriesOrders', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    price:{
+    price: {
         type: Sequelize.INTEGER,
         allowNull: false
     }
-    
-}, { 
+
+}, {
     tableName: 'accessoriesOrders',
     timestamps: false
 });
@@ -134,9 +134,9 @@ var OrderAccesoryDetail = sequelize.define('orderAccesoryDetail', {
         primaryKey: true,
 
     }
-}, { 
-        tableName: 'orderAccesoryDetail',
-        timestamps: false
+}, {
+    tableName: 'orderAccesoryDetail',
+    timestamps: false
 });
 
 
@@ -146,7 +146,7 @@ app.listen(port, '0.0.0.0', () => console.log(`Company Y app listening on port $
 app.get('/getOneAccessory/:accessoryName', (req, res) => {
     let accessoryName = req.params.accessoryName;
     console.log("accessoryId " + accessoryName)
-    Accessories.findAll({ where: { 'accessoryName': accessoryName.toLowerCase()} }).then(function (accessory, err) {
+    Accessories.findAll({ where: { 'accessoryName': accessoryName.toLowerCase() } }).then(function (accessory, err) {
         if (err) {
             throw err;
         }
@@ -194,7 +194,7 @@ app.get('/getCarAccessories/:carName/:model', (req, res) => {
     let model = req.params.model;
     let accessory_list = [];
     let acc = []
-    Accessories.findAll({ where: { 'carName': carName.toLowerCase(), 'model': model.toLowerCase()} }).then(function (accessories, err) {
+    Accessories.findAll({ where: { 'carName': carName.toLowerCase(), 'model': model.toLowerCase() } }).then(function (accessories, err) {
         if (err) {
             throw err;
         }
@@ -206,55 +206,55 @@ app.get('/getCarAccessories/:carName/:model', (req, res) => {
             accessories.forEach(one => {
                 let accessory = one.dataValues;
                 //console.log(accessory.accessoryName);
-                if(accessory.accessoryName === "winter_tires" && accessory.qty >= 4){
+                if (accessory.accessoryName === "winter_tires" && accessory.qty >= 4) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price * 4
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price * 4
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "head_lights" && accessory.qty >= 2){
+                } else if (accessory.accessoryName === "head_lights" && accessory.qty >= 2) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price * 2
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price * 2
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "back_lights" && accessory.qty >= 2){
+                } else if (accessory.accessoryName === "back_lights" && accessory.qty >= 2) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price * 2
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price * 2
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "music_system" && accessory.qty >= 1){
+                } else if (accessory.accessoryName === "music_system" && accessory.qty >= 1) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "smart_navigation_system" && accessory.qty >= 1){
+                } else if (accessory.accessoryName === "smart_navigation_system" && accessory.qty >= 1) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "autopilot" && accessory.qty >= 1){
+                } else if (accessory.accessoryName === "autopilot" && accessory.qty >= 1) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "safe_parking_system" && accessory.qty >= 1){
+                } else if (accessory.accessoryName === "safe_parking_system" && accessory.qty >= 1) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price
                     };
                     accessory_list.push(temp)
-                }else if(accessory.accessoryName === "all_round_protection_guard" && accessory.qty >= 1){
+                } else if (accessory.accessoryName === "all_round_protection_guard" && accessory.qty >= 1) {
                     let temp = {
-                        accessoryName : accessory.accessoryName,
-                        price : accessory.price
+                        accessoryName: accessory.accessoryName,
+                        price: accessory.price
                     };
                     accessory_list.push(temp)
-                }            
+                }
             });
             console.log(accessory_list);
             res.send({ 'status': true, "message": accessory_list });
@@ -274,7 +274,7 @@ app.post('/insertIntoAccessories', (req, res) => {
         let carName = req.body.carName;
         let qty = req.body.qty;
         let model = req.body.model;
-        console.log(accessoryName +", " + price + ", "+ carName +", " + qty + ", " + model);
+        console.log(accessoryName + ", " + price + ", " + carName + ", " + qty + ", " + model);
         return Accessories.create({
             model: model.toLowerCase(),
             accessoryName: accessoryName.toLowerCase(),
@@ -345,81 +345,85 @@ app.put('/updateAccessory', (req, res) => {
 app.post('/insertIntoAccessoriesOrders', (req, res) => {
     let Stringabc = "";
     let accessoryList = req.body.accessoryList;
-    
+
     console.log(Stringabc);
     let totalPrice = req.body.totalPrice;
     let carName = req.body.carName;
     let model = req.body.model;
     let userId = req.body.userId;
 
-    accessoryTableList= []
+    accessoryTableList = []
 
     accessoriesUpdateList = []
     accessoryList.forEach(one => {
-      
-        accessoryTableList.push({model: model,
+
+        accessoryTableList.push({
+            model: model,
             carName: carName,
             userId: userId.toLowerCase(),
             totalPrice: totalPrice,
-            accessoryName : one.accessoryName,
-            price: one.price});
+            accessoryName: one.accessoryName,
+            price: one.price
+        });
 
     });
     console.log(accessoryTableList);
-return sequelize.transaction(function (t) {
-    return AccessoriesOrders.bulkCreate(
-        accessoryTableList
-        , { transaction: t }).then( function (accessories) {           
-        console.log('check' + accessories)
-        accessoryTableList.forEach(element => {
-            console.log('checlllefjd')
-            var currentQuantity  = 0;
+    return sequelize.transaction(function (t) {
+        return AccessoriesOrders.bulkCreate(
+            accessoryTableList
+            , { transaction: t }).then(function (accessories) {
+                console.log('check' + accessories)
+                accessoryTableList.forEach(element => {
+                    console.log('checlllefjd')
+                    var currentQuantity = 0;
 
-            if(element.accessoryName === "winter_tires"){
-                currentQuantity = 4
-            }else if(element.accessoryName === "head_lights" || element.accessoryName === "back_lights"){
-                currentQuantity = 2
-            }else if(element.accessoryName === "music_system" ||
-            element.accessoryName === "smart_navigation_system" ||
-            element.accessoryName === "autopilot" || 
-            element.accessoryName === "safe_parking_system" || element.accessoryName === "all_round_protection_guard"
-            ){
-                currentQuantity = 1
-            }  
-           const acc = Accessories.findOne({where:{
-                accessoryName : element.accessoryName,
-                carName: carName,
-                model: model
-            }},{transaction: t}).then(function(ans){
-                Accessories.update({ qty: ans.qty - currentQuantity }, {
-                    where: {
-                        accessoryName : element.accessoryName,
-                        carName: carName,
-                        model: model
+                    if (element.accessoryName === "winter_tires") {
+                        currentQuantity = 4
+                    } else if (element.accessoryName === "head_lights" || element.accessoryName === "back_lights") {
+                        currentQuantity = 2
+                    } else if (element.accessoryName === "music_system" ||
+                        element.accessoryName === "smart_navigation_system" ||
+                        element.accessoryName === "autopilot" ||
+                        element.accessoryName === "safe_parking_system" || element.accessoryName === "all_round_protection_guard"
+                    ) {
+                        currentQuantity = 1
                     }
-                }, { transaction: t }).then(function (accessory, err) {
-                    console.log('check' + accessory)
-                    if(err){
-                        throw err
-                    }
-                    //res.send({ 'status': true, "message": "Records Updated Successfully" })
-                })
-            })
-            
+                    const acc = Accessories.findOne({
+                        where: {
+                            accessoryName: element.accessoryName,
+                            carName: carName,
+                            model: model
+                        }
+                    }, { transaction: t }).then(function (ans) {
+                        Accessories.update({ qty: ans.qty - currentQuantity }, {
+                            where: {
+                                accessoryName: element.accessoryName,
+                                carName: carName,
+                                model: model
+                            }
+                        }, { transaction: t }).then(function (accessory, err) {
+                            console.log('check' + accessory)
+                            if (err) {
+                                throw err
+                            }
+                            //res.send({ 'status': true, "message": "Records Updated Successfully" })
+                        })
+                    })
 
-        
-        });
-        
-        res.send({ 'status': true, "message": "Records Inserted Successfully" })
 
-    });
-}).catch(function (err) {
-    // Transaction has been rolled back
-    // err is whatever rejected the promise chain returned to the transaction callback
-    console.log('rollback' + err)
-    res.send({ 'status': false, "message": err.message })
 
-});;
+                });
+
+                res.send({ 'status': true, "message": "Records Inserted Successfully" })
+
+            });
+    }).catch(function (err) {
+        // Transaction has been rolled back
+        // err is whatever rejected the promise chain returned to the transaction callback
+        console.log('rollback' + err)
+        res.send({ 'status': false, "message": err.message })
+
+    });;
 });
 
 
@@ -432,14 +436,14 @@ app.post('/deleteAccessory', (req, res) => {
         return Accessories.destroy({
             where: {
                 accessoryName: accessoryName.toLowerCase(),
-                model : model.toLowerCase(),
-                carName : carName.toLowerCase()
+                model: model.toLowerCase(),
+                carName: carName.toLowerCase()
             }
         }, { transaction: t }).then(function (accessory) {
             console.log('check' + accessory)
-            if(accessory == 0){
+            if (accessory == 0) {
                 res.send({ 'status': true, "message": "Data with the submitted parameter not found" })
-            }else{
+            } else {
                 res.send({ 'status': true, "message": "Records Deleted Successfully" })
             }
         });
@@ -453,12 +457,12 @@ app.post('/deleteAccessory', (req, res) => {
 app.get('/getOrderDetails', (req, res) => {
     let userId = req.body.userId;
     console.log(userId);
-    AccessoriesOrders.findAll({ where: { userId: userId.toLowerCase()} }).then(function (accessories, err) {
+    AccessoriesOrders.findAll({ where: { userId: userId.toLowerCase() } }).then(function (accessories, err) {
         if (err) {
             throw err;
         }
         console.log("RESPONSE" + accessories + "anand");
-        if (accessories[0] == null ) {
+        if (accessories[0] == null) {
             console.log("response from query " + accessories);
             res.send({ 'status': false, "message": "No Records Found" })
 
@@ -474,10 +478,10 @@ app.get('/getOrderDetails', (req, res) => {
                 console.log(accesroies);
                 accesroies.pop();
                 resp = {
-                    carName : one.carName,
-                    model : one.model,
-                    totalPrice : one.totalPrice,
-                    accessoryList : accesroies
+                    carName: one.carName,
+                    model: one.model,
+                    totalPrice: one.totalPrice,
+                    accessoryList: accesroies
                 }
                 result.push(resp);
             });
@@ -491,36 +495,19 @@ app.get('/getOrderDetails', (req, res) => {
 });
 
 app.get('/getAllOrderDetails', (req, res) => {
-    AccessoriesOrders.findAll({ }).then(function (accessories, err) {
+    AccessoriesOrders.findAll({}).then(function (accessories, err) {
         if (err) {
             throw err;
         }
         console.log("RESPONSE" + accessories + "anand");
-        if (accessories[0] == null ) {
+        if (accessories[0] == null) {
             console.log("response from query " + accessories);
             res.send({ 'status': false, "message": "No Records Found" })
 
         }
 
         else {
-            console.log(" success response from query " + accessories);
-            let temp = accessories;
-            let result = [{}];
-            result.pop();
-            temp.forEach(one => {
-                accesroies = one.accessoryList.split(",");
-                console.log(accesroies);
-                accesroies.pop();
-                resp = {
-                    carName : one.carName,
-                    model : one.model,
-                    totalPrice : one.totalPrice,
-                    accessoryList : accesroies,
-                    userId : one.userId
-                }
-                result.push(resp);
-            });
-            res.send({ 'status': true, 'message': result });
+            res.send({ 'status': true, 'message': accessories });
         }
 
     }).catch(error => {
