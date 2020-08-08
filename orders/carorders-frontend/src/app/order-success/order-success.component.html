@@ -1,0 +1,25 @@
+<strong>Order placed successfully and confirmation is sent to your email : {{email}}</strong>
+<div class="row" class="text-center">
+    <table>
+        <tr>
+            <td><strong>Products</strong></td>
+            <td>Cost</td>
+        </tr>
+        <tr>
+            <td><strong>{{carName}}-{{model}} Base Price</strong></td>
+            <td>{{basePrice}}</td>
+        </tr>
+        <tr *ngFor="let el of accessories;">
+            <td><strong>{{el.accessoryName}}</strong></td>
+            <td>{{el.price}}</td>
+        </tr>
+        <tr >
+            <td></td>
+            <td></td>
+        </tr>
+        <tr >
+            <td><strong>Total Price</strong></td>
+            <td>{{totalPrice}}</td>
+        </tr>
+    </table>
+</div>
